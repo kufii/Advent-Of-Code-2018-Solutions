@@ -1,4 +1,4 @@
-import { loadInput, toIterator } from '../../util/util.js';
+import { loadInput, toIterator } from '../../util.js';
 
 const FILE = 'day1';
 
