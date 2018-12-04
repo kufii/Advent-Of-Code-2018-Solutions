@@ -8,15 +8,17 @@ export default () => {
 				{
 					onchange: ({ target: t }) => onselect(t.options[t.selectedIndex].value)
 				},
-				options.map(opt =>
-					m(
-						'option',
-						{
-							value: opt.value || opt,
-							selected: (opt.value || opt) === selected
-						},
-						opt.text || opt
-					))
+				options.map(
+					opt =>
+						m(
+							'option',
+							{
+								value: (typeof opt.value === 'undefined' ? opt : opt.value).toString(),
+								selected: (typeof opt.value === 'undefined' ? opt : opt.value).toString() === selected.toString()
+							},
+							opt.text || opt
+						)
+				)
 			)
 	};
 };

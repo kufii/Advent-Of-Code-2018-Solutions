@@ -9,10 +9,16 @@ export default () => {
 
 	const load = promise => {
 		isLoading = true;
-		promise.then(data => {
-			output = data;
-			isLoading = false;
-		}).then(m.redraw);
+		promise
+			.then(data => {
+				output = data;
+				isLoading = false;
+			})
+			.then(m.redraw)
+			.catch(err => {
+				output = err;
+				isLoading = false;
+			});
 	};
 
 	return {

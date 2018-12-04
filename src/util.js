@@ -18,4 +18,17 @@ const toIterator = (arr, loop=false) => {
 	};
 };
 
-export { loadInput, toIterator };
+const distinct = arr => arr.filter((value, index, self) => self.indexOf(value) === index);
+
+const countOccurances = (str, toCount) => (str.length - str.replace(new RegExp(toCount, 'g'), '').length) / toCount.length;
+
+const differences = (str1, str2) => {
+	if (str1.length !== str2.length) return -1;
+	let count = 0;
+	for (let i = 0; i < str1.length; i++) {
+		if (str1[i] !== str2[i]) count++;
+	}
+	return count;
+};
+
+export { loadInput, toIterator, distinct, countOccurances, differences };
