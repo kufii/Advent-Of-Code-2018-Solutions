@@ -1,4 +1,4 @@
-import { loadInput } from '../../util/aoc.js';
+import { loadInput, toIterator } from '../../util/util.js';
 
 const FILE = 'day1';
 
@@ -11,18 +11,10 @@ export default {
 	async part2() {
 		const input = await parseInput();
 
-		const iterator = {
-			*[Symbol.iterator]() {
-				for (let i = 0; i < Infinity; i++) {
-					yield input[i % input.length];
-				}
-			}
-		};
-
 		let value = 0;
 		const history = [value];
 
-		for (const num of iterator) {
+		for (const num of toIterator(input, true)) {
 			value += num;
 			if (history.includes(value)) return value;
 			history.push(value);
