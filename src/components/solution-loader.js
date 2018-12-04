@@ -16,7 +16,8 @@ export default () => {
 			})
 			.then(m.redraw)
 			.catch(err => {
-				output = err;
+				output = '';
+				console.error(err);
 				isLoading = false;
 			});
 	};
