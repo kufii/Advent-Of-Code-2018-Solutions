@@ -80,7 +80,7 @@ export default {
 	async part1() {
 		const guard = (await parseInput()).reduce((a, b) => a.totalSleep > b.totalSleep ? a : b);
 
-		const minutes = getMinuteFrequency;
+		const minutes = getMinuteFrequency(guard);
 
 		const mostSleptMinute = Object.entries(minutes).map(([key, value]) => {
 			return { minute: parseInt(key), value };
