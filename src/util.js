@@ -14,7 +14,7 @@ const toIterator = (arr, loop=false) => ({
 	}
 });
 
-const distinct = arr => arr.filter((value, index, self) => self.indexOf(value) === index);
+const distinct = (value, index, self) => self.indexOf(value) === index;
 
 const countOccurances = (str, toCount) => (str.length - str.replace(new RegExp(toCount, 'g'), '').length) / toCount.length;
 

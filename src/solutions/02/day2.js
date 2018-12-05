@@ -18,7 +18,7 @@ export default {
 		let count2 = 0;
 		let count3 = 0;
 		(await parseInput()).forEach(str => {
-			const chars = distinct(str.split(''));
+			const chars = str.split('').filter(distinct);
 			if (chars.some(char => countOccurances(str, char) === 2)) count2++;
 			if (chars.some(char => countOccurances(str, char) === 3)) count3++;
 		});
