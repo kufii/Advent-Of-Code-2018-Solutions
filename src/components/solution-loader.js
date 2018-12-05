@@ -16,7 +16,7 @@ export default () => {
 			})
 			.then(m.redraw)
 			.catch(err => {
-				output = '';
+				output = 'Error';
 				isLoading = false;
 				m.redraw();
 				console.error(err);
