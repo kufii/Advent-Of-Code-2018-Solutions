@@ -1,4 +1,4 @@
-import { loadInput, maxBy } from '../../util.js';
+import { loadInput, sortBy, maxBy } from '../../util.js';
 
 const FILE = 'day4';
 
@@ -18,7 +18,7 @@ const parseInput = () => loadInput(FILE)
 						cmd: match[2]
 					};
 				})
-				.sort((a, b) => a.time - b.time)
+				.sort(sortBy(cmd => cmd.time))
 				.forEach(({ time, cmd }) => {
 					const match = cmd.match(/#(\d+)/);
 					const id = match ? parseInt(match[1]) : null;
@@ -78,14 +78,14 @@ const getMinuteFrequency = guard => {
 
 export default {
 	async part1() {
-		const guard = maxBy((await parseInput()), guard => guard.totalSleep);
+		const guard = (await parseInput()).reduce(maxBy(guard => guard.totalSleep));
 
 		const minutes = getMinuteFrequency(guard);
 
-		const mostSleptMinute = maxBy(
-			Object.entries(minutes).map(([key, value]) => ({ minute: parseInt(key), value })),
-			minute => minute.value
-		).minute;
+		const mostSleptMinute = Object.entries(minutes)
+			.map(([key, value]) => ({ minute: parseInt(key), value }))
+			.reduce(maxBy(minute => minute.value))
+			.minute;
 
 		return guard.id * mostSleptMinute;
 	},
@@ -95,13 +95,12 @@ export default {
 			return {
 				id: guard.id,
 				minutes,
-				maxFrequency: maxBy(
-					Object.entries(minutes).map(([key, value]) => ({ minute: parseInt(key), value })),
-					minute => minute.value
-				)
+				maxFrequency: Object.entries(minutes)
+					.map(([key, value]) => ({ minute: parseInt(key), value }))
+					.reduce(maxBy(minute => minute.value))
 			};
 		});
-		const { id, maxFrequency } = maxBy(frequencies, freq => freq.value);
+		const { id, maxFrequency } = frequencies.reduce(maxBy(freq => freq.value));
 		return id * maxFrequency.minute;
 	}
 };

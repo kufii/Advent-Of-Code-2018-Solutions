@@ -26,8 +26,12 @@ const charRange = (start, stop) => {
 	return result;
 };
 
-const maxBy = (arr, cb) => arr.reduce((a, b) => cb(b) > cb(a) ? b : a);
+const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
 
-const minBy = (arr, cb) => arr.reduce((a, b) => cb(b) < cb(a) ? b : a);
+const minBy = cb => (a, b) => cb(b) < cb(a) ? b : a;
 
-export { loadInput, toIterator, distinct, countOccurances, charRange, maxBy, minBy };
+const sortBy = cb => (a, b) => cb(a) - cb(b);
+
+const sortByDesc = cb => (a, b) => cb(b) - cb(a);
+
+export { loadInput, toIterator, distinct, countOccurances, charRange, sortBy, sortByDesc, maxBy, minBy };
