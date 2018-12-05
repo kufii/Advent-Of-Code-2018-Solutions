@@ -18,15 +18,6 @@ const distinct = arr => arr.filter((value, index, self) => self.indexOf(value) =
 
 const countOccurances = (str, toCount) => (str.length - str.replace(new RegExp(toCount, 'g'), '').length) / toCount.length;
 
-const differences = (str1, str2) => {
-	if (str1.length !== str2.length) return -1;
-	let count = 0;
-	for (let i = 0; i < str1.length; i++) {
-		if (str1[i] !== str2[i]) count++;
-	}
-	return count;
-};
-
 const charRange = (start, stop) => {
 	const result = [];
 	for (let i = start.charCodeAt(0); i <= stop.charCodeAt(0); i++) {
@@ -35,4 +26,4 @@ const charRange = (start, stop) => {
 	return result;
 };
 
-export { loadInput, toIterator, distinct, countOccurances, differences, charRange };
+export { loadInput, toIterator, distinct, countOccurances, charRange };

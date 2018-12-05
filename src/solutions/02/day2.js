@@ -1,8 +1,17 @@
-import { loadInput, distinct, countOccurances, differences } from '../../util.js';
+import { loadInput, distinct, countOccurances } from '../../util.js';
 
 const FILE = 'day2';
 
 const parseInput = () => loadInput(FILE).then(data => data.split('\n'));
+
+const differences = (str1, str2) => {
+	if (str1.length !== str2.length) return -1;
+	let count = 0;
+	for (let i = 0; i < str1.length; i++) {
+		if (str1[i] !== str2[i]) count++;
+	}
+	return count;
+};
 
 export default {
 	async part1() {
