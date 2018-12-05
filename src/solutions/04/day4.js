@@ -82,9 +82,10 @@ export default {
 
 		const minutes = getMinuteFrequency(guard);
 
-		const mostSleptMinute = Object.entries(minutes).map(([key, value]) => {
-			return { minute: parseInt(key), value };
-		}).reduce((a, b) => b.value > a.value ? b : a).minute;
+		const mostSleptMinute = Object.entries(minutes)
+			.map(([key, value]) => ({ minute: parseInt(key), value }))
+			.reduce((a, b) => b.value > a.value ? b : a)
+			.minute;
 
 		return guard.id * mostSleptMinute;
 	},
@@ -94,9 +95,9 @@ export default {
 			return {
 				id: guard.id,
 				minutes,
-				maxFrequency: Object.entries(minutes).map(([key, value]) => {
-					return { minute: parseInt(key), value };
-				}).reduce((a, b) => b.value > a.value ? b : a)
+				maxFrequency: Object.entries(minutes)
+					.map(([key, value]) => ({ minute: parseInt(key), value }))
+					.reduce((a, b) => b.value > a.value ? b : a)
 			};
 		});
 		const { id, maxFrequency } = frequencies.reduce((a, b) => b.maxFrequency.value > a.maxFrequency.value ? b : a);

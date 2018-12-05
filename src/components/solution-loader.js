@@ -29,9 +29,9 @@ export default () => {
 				m('div', [
 					m('label', 'Day: '),
 					m(Select, {
-						options: solutions.map((s, index) => {
-							return { value: index, text: `Day ${index + 1}` };
-						}),
+						options: solutions.map(
+							(s, index) => ({ value: index, text: `Day ${index + 1}` })
+						),
 						selected: solution,
 						onselect: value => solution = value
 					})
