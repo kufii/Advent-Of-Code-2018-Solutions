@@ -9,18 +9,20 @@ export default () => {
 
 	const load = promise => {
 		isLoading = true;
-		promise
-			.then(data => {
-				output = data;
-				isLoading = false;
-			})
-			.then(m.redraw)
-			.catch(err => {
-				output = 'Error';
-				isLoading = false;
-				m.redraw();
-				console.error(err);
-			});
+		setTimeout(() => {
+			Promise.resolve(promise)
+				.then(data => {
+					output = data;
+					isLoading = false;
+				})
+				.then(m.redraw)
+				.catch(err => {
+					output = 'Error';
+					isLoading = false;
+					m.redraw();
+					console.error(err);
+				});
+		}, 0);
 	};
 
 	return {

@@ -27,4 +27,12 @@ const differences = (str1, str2) => {
 	return count;
 };
 
-export { loadInput, toIterator, distinct, countOccurances, differences };
+const charRange = (start, stop) => {
+	const result = [];
+	for (let i = start.charCodeAt(0); i <= stop.charCodeAt(0); i++) {
+		result.push(String.fromCharCode(i));
+	}
+	return result;
+};
+
+export { loadInput, toIterator, distinct, countOccurances, differences, charRange };
