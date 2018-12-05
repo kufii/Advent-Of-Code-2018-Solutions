@@ -20,7 +20,7 @@ export default () => {
 				isLoading = false;
 				m.redraw();
 				console.error(err);
-			});
+			});//test
 	};
 
 	return {
