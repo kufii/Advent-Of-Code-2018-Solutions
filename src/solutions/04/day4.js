@@ -64,18 +64,23 @@ const parseInput = () => loadInput(FILE)
 
 const getMinute = time => (time.getHours() * 60) + time.getMinutes();
 
+const getMinuteFrequency = guard => {
+	const minutes = {};
+	for (let i = 0; i < 24 * 60; i++) {
+		minutes[i] = Object.entries(guard.days)
+			.map(
+				([_, value]) => value.asleep
+					.filter(span => i >= getMinute(span.from) && i < getMinute(span.to)).length
+			).reduce((a, b) => a + b, 0);
+	}
+	return minutes;
+};
+
 export default {
 	async part1() {
 		const guard = (await parseInput()).reduce((a, b) => a.totalSleep > b.totalSleep ? a : b);
 
-		const minutes = {};
-		for (let i = 0; i < 24 * 60; i++) {
-			minutes[i] = Object.entries(guard.days)
-				.map(
-					([_, value]) => value.asleep
-						.filter(span => i >= getMinute(span.from) && i < getMinute(span.to)).length
-				).reduce((a, b) => a + b, 0);
-		}
+		const minutes = getMinuteFrequency;
 
 		const mostSleptMinute = Object.entries(minutes).map(([key, value]) => {
 			return { minute: parseInt(key), value };
@@ -84,6 +89,17 @@ export default {
 		return guard.id * mostSleptMinute;
 	},
 	async part2() {
-
+		const frequencies = (await parseInput()).map(guard => {
+			const minutes = getMinuteFrequency(guard);
+			return {
+				id: guard.id,
+				minutes,
+				maxFrequency: Object.entries(minutes).map(([key, value]) => {
+					return { minute: parseInt(key), value };
+				}).reduce((a, b) => b.value > a.value ? b : a)
+			};
+		});
+		const { id, maxFrequency } = frequencies.reduce((a, b) => b.maxFrequency.value > a.maxFrequency.value ? b : a);
+		return id * maxFrequency.minute;
 	}
 };
