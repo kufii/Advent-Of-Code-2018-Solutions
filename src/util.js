@@ -7,7 +7,7 @@ const loadInput = file => m.request({
 });
 
 const toIterator = (arr, loop=false) => ({
-	*[Symbol.iterator]() {
+	* [Symbol.iterator]() {
 		for (let i = 0; i < loop ? Infinity : arr.length; i++) {
 			yield arr[i % arr.length];
 		}
@@ -34,4 +34,12 @@ const sortBy = cb => (a, b) => cb(a) - cb(b);
 
 const sortByDesc = cb => (a, b) => cb(b) - cb(a);
 
-export { loadInput, toIterator, distinct, countOccurances, charRange, sortBy, sortByDesc, maxBy, minBy };
+const groupBy = (cbKey, cbValue) => (a, b) => {
+	const key = cbKey(b);
+	const value = cbValue ? cbValue(b) : b;
+	if (!a[key]) a[key] = [];
+	a[key].push(value);
+	return a;
+};
+
+export { loadInput, toIterator, distinct, countOccurances, charRange, sortBy, sortByDesc, maxBy, minBy, groupBy };

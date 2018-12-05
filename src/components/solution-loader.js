@@ -9,6 +9,7 @@ export default () => {
 
 	const load = fn => {
 		isLoading = true;
+		m.redraw();
 		setTimeout(() => {
 			Promise.resolve(fn())
 				.then(data => {
@@ -25,28 +26,25 @@ export default () => {
 		}, 0);
 	};
 
+	const loadButton = (text, onclick) => m('button.pure-button.pure-button-primary', {
+		disabled: isLoading,
+		onclick
+	}, text);
+
 	return {
 		view: () =>
-			m('div', [
+			m('div.pure-form', [
+				m('label', 'Day: '),
+				m(Select, {
+					options: solutions.map(
+						(s, index) => ({ value: index, text: `Day ${index + 1}` })
+					),
+					selected: solution,
+					onselect: value => solution = value
+				}),
 				m('div', [
-					m('label', 'Day: '),
-					m(Select, {
-						options: solutions.map(
-							(s, index) => ({ value: index, text: `Day ${index + 1}` })
-						),
-						selected: solution,
-						onselect: value => solution = value
-					})
-				]),
-				m('div', [
-					m('button', {
-						disabled: isLoading,
-						onclick: () => load(solutions[solution].part1)
-					}, 'Part 1'),
-					m('button', {
-						disabled: isLoading,
-						onclick: () => load(solutions[solution].part2)
-					}, 'Part 2')
+					loadButton('Part 1', () => load(solutions[solution].part1)),
+					loadButton('Part 2', () => load(solutions[solution].part2))
 				]),
 				m('pre', isLoading ? 'Loading...' : output)
 			])

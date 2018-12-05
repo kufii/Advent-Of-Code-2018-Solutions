@@ -1,0 +1,38 @@
+html,
+body {
+	font-family: 'Roboto', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	line-height: 1.6;
+}
+
+.container {
+	text-align: center;
+	padding: 1em;
+}
+
+.header {
+	font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+	margin: 0 auto;
+	padding: 1em;
+	border-bottom: 1px solid #eee;
+	letter-spacing: 0.05em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
+	color: rgb(75, 75, 75);
+}
+
+h1 {
+	font-weight: 100;
+	font-size: 300%;
+}
+
+.pure-button {
+	margin: 0.1em;
+}
