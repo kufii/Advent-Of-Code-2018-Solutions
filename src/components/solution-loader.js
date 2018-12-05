@@ -18,7 +18,7 @@ export default () => {
 			.catch(err => {
 				output = '';
 				isLoading = false;
-				if (console) console.error(err);
+				if (console.error) console.error(err);
 			});
 	};
 
