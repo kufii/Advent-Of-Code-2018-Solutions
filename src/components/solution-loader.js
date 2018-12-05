@@ -7,10 +7,10 @@ export default () => {
 	let output = '';
 	let solution = 0;
 
-	const load = promise => {
+	const load = fn => {
 		isLoading = true;
 		setTimeout(() => {
-			Promise.resolve(promise)
+			Promise.resolve(fn())
 				.then(data => {
 					output = data;
 					isLoading = false;
@@ -41,11 +41,11 @@ export default () => {
 				m('div', [
 					m('button', {
 						disabled: isLoading,
-						onclick: () => load(solutions[solution].part1())
+						onclick: () => load(solutions[solution].part1)
 					}, 'Part 1'),
 					m('button', {
 						disabled: isLoading,
-						onclick: () => load(solutions[solution].part2())
+						onclick: () => load(solutions[solution].part2)
 					}, 'Part 2')
 				]),
 				m('pre', isLoading ? 'Loading...' : output)
