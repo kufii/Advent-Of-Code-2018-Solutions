@@ -1,4 +1,4 @@
-import m from 'https://gitcdn.link/cdn/MithrilJS/mithril.js/next/mithril.mjs';
+import m from 'https://unpkg.com/mithril@next?module';
 import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
 
