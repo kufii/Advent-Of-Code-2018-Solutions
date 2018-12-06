@@ -7,7 +7,7 @@ const loadInput = file => m.request({
 });
 
 const toIterator = (arr, loop=false) => ({
-	* [Symbol.iterator]() {
+	*[Symbol.iterator]() {
 		for (let i = 0; i < loop ? Infinity : arr.length; i++) {
 			yield arr[i % arr.length];
 		}

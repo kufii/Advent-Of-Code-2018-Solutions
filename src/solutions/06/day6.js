@@ -46,7 +46,7 @@ const createGrid = coords => {
 	return grid;
 };
 
-const iterate = function* (grid) {
+const iterate = function*(grid) {
 	for (let y = 0; y < grid.length; y++) {
 		for (let x = 0; x < grid[y].length; x++) {
 			yield grid[y][x];
@@ -54,7 +54,7 @@ const iterate = function* (grid) {
 	}
 };
 
-const iteratePerimeter = function* (grid) {
+const iteratePerimeter = function*(grid) {
 	if (grid.length === 0) return;
 	for (let y = 0; y < grid.length; y++) {
 		yield grid[y][0];
