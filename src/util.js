@@ -14,8 +14,6 @@ const toIterator = (arr, loop=false) => ({
 	}
 });
 
-const distinct = (value, index, self) => self.indexOf(value) === index;
-
 const countOccurances = (str, toCount) => (str.length - str.replace(new RegExp(toCount, 'g'), '').length) / toCount.length;
 
 const charRange = (start, stop) => {
@@ -25,6 +23,19 @@ const charRange = (start, stop) => {
 	}
 	return result;
 };
+
+const makeArray = (ySize, xSize, fill=null) => {
+	const arr = [];
+	for (let y = 0; y < ySize; y++) {
+		arr.push([]);
+		for (let x = 0; x < xSize; x++) {
+			arr[y].push(fill);
+		}
+	}
+	return arr;
+};
+
+const distinct = (value, index, self) => self.indexOf(value) === index;
 
 const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
 
@@ -42,4 +53,4 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
-export { loadInput, toIterator, distinct, countOccurances, charRange, sortBy, sortByDesc, maxBy, minBy, groupBy };
+export { loadInput, toIterator, countOccurances, charRange, makeArray, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
