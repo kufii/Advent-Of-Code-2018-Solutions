@@ -24,16 +24,22 @@ const charRange = (start, stop) => {
 	return result;
 };
 
-const makeArray = (ySize, xSize, fill=null) => {
+const makeArray = (ySize, xSize=null, fill=null) => {
 	const arr = [];
 	for (let y = 0; y < ySize; y++) {
-		arr.push([]);
-		for (let x = 0; x < xSize; x++) {
-			arr[y].push(fill);
+		if (xSize) {
+			arr.push([]);
+			for (let x = 0; x < xSize; x++) {
+				arr[y].push(fill);
+			}
+		} else {
+			arr.push(fill);
 		}
 	}
 	return arr;
 };
+
+const isString = a => typeof a === 'string' || a instanceof String;
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
@@ -41,9 +47,9 @@ const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
 
 const minBy = cb => (a, b) => cb(b) < cb(a) ? b : a;
 
-const sortBy = cb => (a, b) => cb(a) - cb(b);
+const sortBy = cb => (a, b) => isString(cb(a)) ? cb(a).localeCompare(cb(b)) : cb(a) - cb(b);
 
-const sortByDesc = cb => (a, b) => cb(b) - cb(a);
+const sortByDesc = cb => (a, b) => isString(cb(a)) ? cb(b).localeCompare(cb(a)) : cb(b) - cb(a);
 
 const groupBy = (cbKey, cbValue) => (a, b) => {
 	const key = cbKey(b);
@@ -53,4 +59,4 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
-export { loadInput, toIterator, countOccurances, charRange, makeArray, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
+export { loadInput, toIterator, countOccurances, charRange, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
