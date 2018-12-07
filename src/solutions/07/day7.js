@@ -25,7 +25,7 @@ const parseInput = () => loadInput(FILE).then(
 const completeStep = (steps, step) => {
 	steps = steps.filter(({ step: step2 }) => step2 !== step);
 	steps.forEach(obj => obj.dependsOn = obj.dependsOn.filter(step2 => step2 !== step));
-	return steps
+	return steps;
 };
 
 export default {
