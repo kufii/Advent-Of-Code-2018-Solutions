@@ -54,14 +54,10 @@ export default {
 				.filter(({ step }) => !activeWork().some(w => w.step === step))
 				.sort(sortBy(({ step }) => step))
 				.slice(0, inactiveWork().length)
-				.forEach(step => {
-					work[work.indexOf(null)] = step;
-				});
+				.forEach(step => work[work.indexOf(null)] = step);
 
 			const minTime = Math.min(...activeWork().map(({ time }) => time));
-
 			time += minTime;
-
 			work.forEach((step, index) => {
 				if (!step) return;
 				step.time -= minTime;
