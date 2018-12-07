@@ -9,7 +9,6 @@ const parseInput = () => loadInput(FILE).then(
 				const [_, dependsOn, step] = line.match(/^Step ([A-Z]) must be finished before step ([A-Z])/i);
 				return { step, dependsOn };
 			})
-			.sort(sortBy(a => a.dependsOn))
 			.reduce(groupBy(a => a.step, a => a.dependsOn), {});
 
 		Object.entries(steps).forEach(([_, dependsOn]) => {
