@@ -1,9 +1,9 @@
 import input from './input.js';
-import { charRange } from '../../util.js';
+import { range } from '../../util.js';
 
 const runRegex = input => {
 	const pairs = [];
-	charRange('A', 'Z').forEach(char => {
+	range('A', 'Z').forEach(char => {
 		pairs.push(char + char.toLowerCase());
 		pairs.push(char.toLowerCase() + char);
 	});
@@ -22,7 +22,7 @@ export default {
 		return runRegex(input).length;
 	},
 	part2() {
-		const lengths = charRange('A', 'Z')
+		const lengths = range('A', 'Z')
 			.map(
 				char => runRegex(input.replace(new RegExp(char, 'ig'), '')).length
 			);

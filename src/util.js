@@ -8,10 +8,16 @@ const toIterator = (arr, loop=false) => ({
 
 const countOccurances = (str, toCount) => (str.length - str.replace(new RegExp(toCount, 'g'), '').length) / toCount.length;
 
-const charRange = (start, stop) => {
+const range = (start, stop) => {
 	const result = [];
-	for (let i = start.charCodeAt(0); i <= stop.charCodeAt(0); i++) {
-		result.push(String.fromCharCode(i));
+	if (isString(start)) {
+		for (let i = start.charCodeAt(0); i <= stop.charCodeAt(0); i++) {
+			result.push(String.fromCharCode(i));
+		}
+	} else {
+		for (let i = start; i <= stop; i++) {
+			result.push(i);
+		}
 	}
 	return result;
 };
@@ -51,4 +57,4 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
-export { toIterator, countOccurances, charRange, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
+export { toIterator, countOccurances, range, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
