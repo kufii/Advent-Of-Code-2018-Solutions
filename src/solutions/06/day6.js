@@ -1,12 +1,9 @@
-import { loadInput, makeArray } from '../../util.js';
+import input from './input.js';
+import { makeArray } from '../../util.js';
 
-const FILE = 'day6';
-
-const parseInput = () => loadInput(FILE).then(
-	data => data.split('\n')
-		.map(line => line.split(', '))
-		.map(([x, y]) => ({ x: parseInt(x), y: parseInt(y) }))
-);
+const parseInput = () => input.split('\n')
+	.map(line => line.split(', '))
+	.map(([x, y]) => ({ x: parseInt(x), y: parseInt(y) }));
 
 const getBounds = coords => ({
 	minX: Math.min(...coords.map(coord => coord.x)),
@@ -80,15 +77,15 @@ const getNonInfiniteAreas = grid => {
 };
 
 export default {
-	async part1() {
-		const grid = createGrid(adjustCoords(await parseInput()));
+	part1() {
+		const grid = createGrid(adjustCoords(parseInput()));
 		const areas = getNonInfiniteAreas(grid);
 		const values = Array.from(iterate(grid));
 		const sizes = areas.map(area => values.filter(value => value === area).length);
 		return Math.max(...sizes);
 	},
-	async part2() {
-		const coords = adjustCoords(await parseInput());
+	part2() {
+		const coords = adjustCoords(parseInput());
 		const { maxX, maxY } = getBounds(coords);
 		let size = 0;
 		for (let x = 0; x <= maxX; x++) {

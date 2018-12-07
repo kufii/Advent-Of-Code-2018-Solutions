@@ -1,66 +1,62 @@
-import { loadInput, sortBy, maxBy } from '../../util.js';
+import input from './input.js';
+import { sortBy, maxBy } from '../../util.js';
 
-const FILE = 'day4';
+const parseInput = () => {
+	const guards = {};
 
-const parseInput = () => loadInput(FILE)
-	.then(
-		data => {
-			const guards = {};
+	let lastId;
+	let lastTime;
 
-			let lastId;
-			let lastTime;
+	input.split('\n')
+		.map(str => {
+			const match = str.match(/^\[(.*)\] (.*)/);
+			return {
+				time: new Date(match[1]),
+				cmd: match[2]
+			};
+		})
+		.sort(sortBy(cmd => cmd.time))
+		.forEach(({ time, cmd }) => {
+			const match = cmd.match(/#(\d+)/);
+			const id = match ? parseInt(match[1]) : null;
 
-			data.split('\n')
-				.map(str => {
-					const match = str.match(/^\[(.*)\] (.*)/);
-					return {
-						time: new Date(match[1]),
-						cmd: match[2]
+			if (id) {
+				lastId = id;
+				if (!guards[id]) {
+					guards[id] = {
+						days: {},
+						totalSleep: 0,
+						totalAwake: 0
 					};
-				})
-				.sort(sortBy(cmd => cmd.time))
-				.forEach(({ time, cmd }) => {
-					const match = cmd.match(/#(\d+)/);
-					const id = match ? parseInt(match[1]) : null;
+				}
+			} else {
+				const date = time.toLocaleDateString();
+				if (!guards[lastId].days[date]) {
+					guards[lastId].days[date] = {
+						asleep: [],
+						awake: []
+					};
+				}
+				const day = guards[lastId].days[date];
+				const timespan = { from: lastTime, to: time };
+				if (cmd === 'wakes up') {
+					day.asleep.push(timespan);
+					guards[lastId].totalSleep += timespan.to - timespan.from;
+				} else {
+					day.awake.push(timespan);
+					guards[lastId].totalAwake += timespan.to - timespan.from;
+				}
+			}
 
-					if (id) {
-						lastId = id;
-						if (!guards[id]) {
-							guards[id] = {
-								days: {},
-								totalSleep: 0,
-								totalAwake: 0
-							};
-						}
-					} else {
-						const date = time.toLocaleDateString();
-						if (!guards[lastId].days[date]) {
-							guards[lastId].days[date] = {
-								asleep: [],
-								awake: []
-							};
-						}
-						const day = guards[lastId].days[date];
-						const timespan = { from: lastTime, to: time };
-						if (cmd === 'wakes up') {
-							day.asleep.push(timespan);
-							guards[lastId].totalSleep += timespan.to - timespan.from;
-						} else {
-							day.awake.push(timespan);
-							guards[lastId].totalAwake += timespan.to - timespan.from;
-						}
-					}
+			lastTime = time;
+		});
 
-					lastTime = time;
-				});
-
-			return Object.entries(guards).map(([key, value]) => {
-				const guard = value;
-				guard.id = key;
-				return guard;
-			});
-		}
-	);
+	return Object.entries(guards).map(([key, value]) => {
+		const guard = value;
+		guard.id = key;
+		return guard;
+	});
+};
 
 const getMinute = time => (time.getHours() * 60) + time.getMinutes();
 
@@ -77,8 +73,8 @@ const getMinuteFrequency = guard => {
 };
 
 export default {
-	async part1() {
-		const guard = (await parseInput()).reduce(maxBy(guard => guard.totalSleep));
+	part1() {
+		const guard = parseInput().reduce(maxBy(guard => guard.totalSleep));
 
 		const minutes = getMinuteFrequency(guard);
 
@@ -89,8 +85,8 @@ export default {
 
 		return guard.id * mostSleptMinute;
 	},
-	async part2() {
-		const frequencies = (await parseInput()).map(guard => {
+	part2() {
+		const frequencies = parseInput().map(guard => {
 			const minutes = getMinuteFrequency(guard);
 			return {
 				id: guard.id,

@@ -1,6 +1,5 @@
-import { loadInput, charRange } from '../../util.js';
-
-const FILE = 'day5';
+import input from './input.js';
+import { charRange } from '../../util.js';
 
 const runRegex = input => {
 	const pairs = [];
@@ -19,16 +18,10 @@ const runRegex = input => {
 };
 
 export default {
-	async part1() {
-		let input = await loadInput(FILE);
-
-		input = runRegex(input);
-
-		return input.length;
+	part1() {
+		return runRegex(input).length;
 	},
-	async part2() {
-		const input = await loadInput(FILE);
-
+	part2() {
 		const lengths = charRange('A', 'Z')
 			.map(
 				char => runRegex(input.replace(new RegExp(char, 'ig'), '')).length

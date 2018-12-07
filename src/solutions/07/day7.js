@@ -1,25 +1,22 @@
-import { loadInput, groupBy, sortBy, makeArray } from '../../util.js';
+import input from './input.js';
+import { groupBy, sortBy, makeArray } from '../../util.js';
 
-const FILE = 'day7';
+const parseInput = () => {
+	const steps = input.split('\n')
+		.map(line => {
+			const [_, dependsOn, step] = line.match(/^Step ([A-Z]) must be finished before step ([A-Z])/i);
+			return { step, dependsOn };
+		})
+		.reduce(groupBy(a => a.step, a => a.dependsOn), {});
 
-const parseInput = () => loadInput(FILE).then(
-	data => {
-		const steps = data.split('\n')
-			.map(line => {
-				const [_, dependsOn, step] = line.match(/^Step ([A-Z]) must be finished before step ([A-Z])/i);
-				return { step, dependsOn };
-			})
-			.reduce(groupBy(a => a.step, a => a.dependsOn), {});
-
-		Object.entries(steps).forEach(([_, dependsOn]) => {
-			dependsOn.forEach(step => {
-				if (!steps[step]) steps[step] = [];
-			});
+	Object.entries(steps).forEach(([_, dependsOn]) => {
+		dependsOn.forEach(step => {
+			if (!steps[step]) steps[step] = [];
 		});
+	});
 
-		return steps;
-	}
-);
+	return steps;
+};
 
 const completeStep = (steps, step) => {
 	steps = steps.filter(({ step: step2 }) => step2 !== step);
@@ -28,8 +25,8 @@ const completeStep = (steps, step) => {
 };
 
 export default {
-	async part1() {
-		let steps = Object.entries(await parseInput()).map(([step, dependsOn]) => ({ step, dependsOn }));
+	part1() {
+		let steps = Object.entries(parseInput()).map(([step, dependsOn]) => ({ step, dependsOn }));
 		const exec = [];
 		while (steps.length > 0) {
 			const { step } = steps.filter(({ dependsOn }) => dependsOn.length === 0).sort(sortBy(({ step }) => step))[0];
@@ -38,11 +35,11 @@ export default {
 		}
 		return exec.join('');
 	},
-	async part2() {
+	part2() {
 		const BASE_TIME_PER_STEP = 60;
 		const NUM_WORKERS = 5;
 
-		let steps = Object.entries(await parseInput()).map(([step, dependsOn]) => ({ step, dependsOn, time: BASE_TIME_PER_STEP + step.charCodeAt(0) - 64 }));
+		let steps = Object.entries(parseInput()).map(([step, dependsOn]) => ({ step, dependsOn, time: BASE_TIME_PER_STEP + step.charCodeAt(0) - 64 }));
 		let time = 0;
 
 		const work = makeArray(NUM_WORKERS);

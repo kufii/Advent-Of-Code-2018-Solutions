@@ -1,3 +1,4 @@
+export default `
 [1518-05-11 00:22] falls asleep
 [1518-10-11 00:51] wakes up
 [1518-10-12 00:31] wakes up
@@ -1075,3 +1076,4 @@
 [1518-09-15 00:52] falls asleep
 [1518-08-09 00:47] falls asleep
 [1518-10-23 00:24] falls asleep
+`.trim();

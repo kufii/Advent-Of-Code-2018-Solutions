@@ -1,8 +1,7 @@
-import { loadInput, distinct, countOccurances } from '../../util.js';
+import input from './input.js';
+import { distinct, countOccurances } from '../../util.js';
 
-const FILE = 'day2';
-
-const parseInput = () => loadInput(FILE).then(data => data.split('\n'));
+const parseInput = () => input.split('\n');
 
 const differences = (str1, str2) => {
 	if (str1.length !== str2.length) return -1;

@@ -1,25 +1,21 @@
-import { loadInput } from '../../util.js';
+import input from './input.js';
 
-const FILE = 'day3';
-
-const parseInput = () => loadInput(FILE)
-	.then(
-		data => data.split('\n')
-			.map(str => {
-				const match = str.match(/^#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/);
-				return {
-					id: parseInt(match[1]),
-					pos: {
-						x: parseInt(match[2]),
-						y: parseInt(match[3])
-					},
-					size: {
-						x: parseInt(match[4]),
-						y: parseInt(match[5])
-					}
-				};
-			})
-	);
+const parseInput = () =>
+	input.split('\n')
+		.map(str => {
+			const match = str.match(/^#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/);
+			return {
+				id: parseInt(match[1]),
+				pos: {
+					x: parseInt(match[2]),
+					y: parseInt(match[3])
+				},
+				size: {
+					x: parseInt(match[4]),
+					y: parseInt(match[5])
+				}
+			};
+		});
 
 const getOverlappingCoords = (square1, square2) => {
 	const overlapping = [];
@@ -37,8 +33,8 @@ const getOverlappingCoords = (square1, square2) => {
 };
 
 export default {
-	async part1() {
-		const squares = await parseInput();
+	part1() {
+		const squares = parseInput();
 		const overlapping = new Set();
 
 		squares.forEach(square1 => {
@@ -52,8 +48,8 @@ export default {
 
 		return overlapping.size;
 	},
-	async part2() {
-		const squares = await parseInput();
+	part2() {
+		const squares = parseInput();
 		return squares.filter(
 			square1 => squares
 				.filter(square2 => square2 !== square1)

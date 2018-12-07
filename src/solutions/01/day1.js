@@ -1,15 +1,14 @@
-import { loadInput, toIterator } from '../../util.js';
+import input from './input.js';
+import { toIterator } from '../../util.js';
 
-const FILE = 'day1';
-
-const parseInput = () => loadInput(FILE).then(data => data.split('\n').map(num => parseInt(num)));
+const parseInput = () => input.split('\n').map(num => parseInt(num));
 
 export default {
-	async part1() {
-		return (await parseInput()).reduce((a, b) => a + b, 0);
+	part1() {
+		return parseInput().reduce((a, b) => a + b, 0);
 	},
-	async part2() {
-		const input = await parseInput();
+	part2() {
+		const input = parseInput();
 
 		let value = 0;
 		const history = [value];

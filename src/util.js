@@ -1,11 +1,3 @@
-import m from 'https://unpkg.com/mithril@next?module';
-
-const loadInput = file => m.request({
-	url: `../../inputs/${file}.txt`,
-	deserialize: data => data.trim(),
-	background: true
-});
-
 const toIterator = (arr, loop=false) => ({
 	*[Symbol.iterator]() {
 		for (let i = 0; i < loop ? Infinity : arr.length; i++) {
@@ -59,4 +51,4 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
-export { loadInput, toIterator, countOccurances, charRange, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
+export { toIterator, countOccurances, charRange, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
