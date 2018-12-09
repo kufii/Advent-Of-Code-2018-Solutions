@@ -57,4 +57,10 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
-export { toIterator, countOccurances, range, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy };
+const nTimes = (cb, n) => {
+	for (let i = 0; i < n; i++) {
+		cb(i);
+	}
+};
+
+export { toIterator, countOccurances, range, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes };

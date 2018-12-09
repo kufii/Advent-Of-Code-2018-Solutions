@@ -11,18 +11,23 @@ export default () => {
 		isLoading = true;
 		m.redraw();
 		setTimeout(() => {
-			Promise.resolve(fn())
-				.then(data => {
-					output = data;
-					isLoading = false;
-				})
-				.then(m.redraw)
-				.catch(err => {
-					output = 'Error';
-					isLoading = false;
-					m.redraw();
-					console.error(err);
-				});
+			const logErr = err => {
+				output = 'Error';
+				isLoading = false;
+				m.redraw();
+				console.error(err);
+			};
+			try {
+				Promise.resolve(fn())
+					.then(data => {
+						output = data;
+						isLoading = false;
+					})
+					.then(m.redraw)
+					.catch(logErr);
+			} catch (err) {
+				logErr(err);
+			}
 		}, 0);
 	};
 
