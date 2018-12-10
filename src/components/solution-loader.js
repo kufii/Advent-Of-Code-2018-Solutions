@@ -38,8 +38,8 @@ export default () => {
 									stopInterval();
 								} else {
 									output = value;
-									m.redraw();
 								}
+								m.redraw();
 							}, 1000);
 							intervalRunning = true;
 						} else {
