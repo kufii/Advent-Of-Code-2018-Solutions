@@ -17,6 +17,7 @@ export default () => {
 	};
 
 	const load = fn => {
+		const day = solution;
 		stopInterval();
 		isLoading = true;
 		m.redraw();
@@ -42,7 +43,7 @@ export default () => {
 									output = value;
 								}
 								m.redraw();
-							}, 1000);
+							}, solutions[day].interval);
 							intervalRunning = true;
 						} else {
 							output = data;

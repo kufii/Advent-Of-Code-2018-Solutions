@@ -52,7 +52,7 @@ const run = function*() {
 		const rangeY = maxY - minY;
 		if (previousBounds && rangeX > previousBounds.maxX - previousBounds.minX && rangeY > previousBounds.maxY - previousBounds.minY) {
 			break;
-		} else if (rangeX < 100 && rangeY < 100) {
+		} else if (rangeX < 150 && rangeY < 150) {
 			const adjusted = adjustCoords(coords);
 			const array = makeArray(rangeY + 1, rangeX + 1, ' ');
 			fillArray(array, adjusted);
@@ -70,5 +70,6 @@ export default {
 	},
 	part2() {
 		return run;
-	}
+	},
+	interval: 150
 };
