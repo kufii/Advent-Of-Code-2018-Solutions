@@ -6,10 +6,17 @@ export default () => {
 	let isLoading = false;
 	let output = '';
 	let solution = 0;
+
 	let interval;
+	let intervalRunning = false;
+
+	const stopInterval = () => {
+		clearInterval(interval);
+		intervalRunning = false;
+	};
 
 	const load = fn => {
-		clearInterval(interval);
+		stopInterval();
 		isLoading = true;
 		m.redraw();
 		setTimeout(() => {
@@ -28,12 +35,13 @@ export default () => {
 							interval = setInterval(() => {
 								const { value, done } = data.next();
 								if (done) {
-									clearInterval(interval);
+									stopInterval();
 								} else {
 									output = value;
 									m.redraw();
 								}
-							}, 100);
+							}, 1000);
+							intervalRunning = true;
 						} else {
 							output = data;
 						}
@@ -66,6 +74,7 @@ export default () => {
 					loadButton('Part 1', () => load(solutions[solution].part1)),
 					loadButton('Part 2', () => load(solutions[solution].part2))
 				]),
+				m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!')),
 				m('pre', isLoading ? 'Loading...' : output)
 			])
 	};
