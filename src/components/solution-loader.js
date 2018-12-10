@@ -6,8 +6,10 @@ export default () => {
 	let isLoading = false;
 	let output = '';
 	let solution = 0;
+	let interval;
 
 	const load = fn => {
+		clearInterval(interval);
 		isLoading = true;
 		m.redraw();
 		setTimeout(() => {
@@ -20,8 +22,21 @@ export default () => {
 			try {
 				Promise.resolve(fn())
 					.then(data => {
-						output = data;
 						isLoading = false;
+						if (data[Symbol.iterator]) {
+							output = '';
+							interval = setInterval(() => {
+								const { value, done } = data.next();
+								if (done) {
+									clearInterval(interval);
+								} else {
+									output = value;
+									m.redraw();
+								}
+							}, 100);
+						} else {
+							output = data;
+						}
 					})
 					.then(m.redraw)
 					.catch(logErr);
