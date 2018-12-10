@@ -1,6 +1,6 @@
 html,
 body {
-	font-family: 'Roboto', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	line-height: 1.6;
 }
 
@@ -10,7 +10,7 @@ body {
 }
 
 .header {
-	font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Raleway', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	text-align: center;
 	margin: 0 auto;
 	padding: 1em;
