@@ -43,19 +43,22 @@ const run = function*() {
 		});
 	};
 
-	let found = false;
 	let seconds = 0;
+	let previousBounds;
 	while (true) {
-		const { minX, minY, maxX, maxY } = getBounds(coords);
-		if (maxX - minX < 100 && maxY - minY < 100) {
-			found = true;
+		const bounds = getBounds(coords);
+		const { minX, minY, maxX, maxY } = bounds;
+		const rangeX = maxX - minX;
+		const rangeY = maxY - minY;
+		if (previousBounds && rangeX > previousBounds.maxX - previousBounds.minX && rangeY > previousBounds.maxY - previousBounds.minY) {
+			break;
+		} else if (rangeX < 100 && rangeY < 100) {
 			const adjusted = adjustCoords(coords);
-			const array = makeArray(maxY - minY + 1, maxX - minX + 1, ' ');
+			const array = makeArray(rangeY + 1, rangeX + 1, ' ');
 			fillArray(array, adjusted);
 			yield `Seconds: ${seconds}\n${toString(array)}`;
-		} else if (found) {
-			break;
 		}
+		previousBounds = bounds;
 		update();
 		seconds++;
 	}
