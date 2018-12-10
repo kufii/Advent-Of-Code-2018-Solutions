@@ -36,12 +36,10 @@ const run = function*() {
 
 	const fillArray = (arr, coords) => coords.forEach(c => arr[c.pos.y][c.pos.x] = '#');
 	const toString = arr => arr.map(line => line.join('')).join('\n');
-	const update = () => {
-		coords.forEach(c => {
-			c.pos.x += c.velocity.x;
-			c.pos.y += c.velocity.y;
-		});
-	};
+	const update = () => coords.forEach(c => {
+		c.pos.x += c.velocity.x;
+		c.pos.y += c.velocity.y;
+	});
 
 	let seconds = 0;
 	let previousBounds;
