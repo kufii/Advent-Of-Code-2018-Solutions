@@ -39,6 +39,8 @@ const makeArray = (ySize, xSize=null, fill=null) => {
 
 const isString = a => typeof a === 'string' || a instanceof String;
 
+const isGenerator = a => a instanceof (function*() { yield; }).constructor;
+
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
 const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
@@ -63,4 +65,4 @@ const nTimes = (cb, n) => {
 	}
 };
 
-export { toIterator, countOccurances, range, makeArray, isString, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes };
+export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes };

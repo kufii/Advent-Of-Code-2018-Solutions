@@ -63,9 +63,9 @@ const run = function*() {
 
 export default {
 	part1() {
-		return run();
+		return run;
 	},
 	part2() {
-		return run();
+		return run;
 	}
 };

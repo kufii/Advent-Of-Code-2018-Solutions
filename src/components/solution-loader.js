@@ -1,6 +1,7 @@
 import m from 'https://unpkg.com/mithril@next?module';
 import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
+import { isGenerator } from '../util.js';
 
 export default () => {
 	let isLoading = false;
@@ -30,7 +31,8 @@ export default () => {
 				Promise.resolve(fn())
 					.then(data => {
 						isLoading = false;
-						if (data[Symbol.iterator]) {
+						if (isGenerator(data)) {
+							data = data();
 							output = '';
 							interval = setInterval(() => {
 								const { value, done } = data.next();
