@@ -9,10 +9,10 @@ const parseInput = () => {
 
 	input.split('\n')
 		.map(str => {
-			const match = str.match(/^\[(.*)\] (.*)/);
+			const [_, time, cmd] = str.match(/^\[(.*)\] (.*)/);
 			return {
-				time: new Date(match[1]),
-				cmd: match[2]
+				time: new Date(time),
+				cmd
 			};
 		})
 		.sort(sortBy(cmd => cmd.time))
