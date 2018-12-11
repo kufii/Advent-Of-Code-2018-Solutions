@@ -44,7 +44,7 @@ export default {
 			const powers = {};
 			for (let size = 1; size <= array.length; size++) {
 				powers[size] = Array.from(getPowers(array, size)).reduce(maxBy(a => a.power));
-				yield `Calculated ${size}`;
+				yield `Calculated ${size} of ${array.length}`;
 			}
 			yield Object.entries(powers)
 				.map(([key, value]) => ({ id: `${value.x},${value.y},${key}`, power: value.power }))
@@ -52,5 +52,5 @@ export default {
 				.id;
 		};
 	},
-	interval: 5
+	interval: 0
 };
