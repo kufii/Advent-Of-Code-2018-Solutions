@@ -22,10 +22,14 @@ export default {
 		return runRegex(input).length;
 	},
 	part2() {
-		const lengths = range('A', 'Z')
-			.map(
-				char => runRegex(input.replace(new RegExp(char, 'ig'), '')).length
-			);
-		return Math.min(...lengths);
-	}
+		return function*() {
+			const lengths = [];
+			for (const char of range('A', 'Z')) {
+				yield `${char}...`;
+				lengths.push(runRegex(input.replace(new RegExp(char, 'ig'), '')).length);
+			}
+			yield Math.min(...lengths);
+		};
+	},
+	interval: 0
 };

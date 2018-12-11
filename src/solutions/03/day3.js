@@ -50,10 +50,10 @@ export default {
 	},
 	part2() {
 		const squares = parseInput();
-		return squares.filter(
+		return squares.find(
 			square1 => squares
 				.filter(square2 => square2 !== square1)
 				.every(square2 => getOverlappingCoords(square1, square2).length === 0)
-		)[0].id;
+		).id;
 	}
 };
