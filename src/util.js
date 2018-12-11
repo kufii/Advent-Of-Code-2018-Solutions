@@ -65,4 +65,25 @@ const nTimes = (cb, n) => {
 	}
 };
 
-export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes };
+class SummedAreaTable {
+	constructor(array) {
+		this.sums = makeArray(array.length + 1, array[0].length + 1, 0);
+		for (let y = 1; y < this.sums.length; y++) {
+			for (let x = 1; x < this.sums[y].length; x++) {
+				this.sums[y][x] = array[y - 1][x - 1] + this.sums[y - 1][x] + this.sums[y][x - 1] - this.sums[y - 1][x - 1];
+			}
+		}
+	}
+	get width() {
+		return this.sums[0].length;
+	}
+	get height() {
+		return this.sums.length;
+	}
+	calculateArea(x, y, width, height) {
+		const [bx, by] = [x + width - 1, y + height - 1];
+		return this.sums[by][bx] - this.sums[by - height][bx] - this.sums[by][bx - width] + this.sums[by - height][bx - width];
+	}
+}
+
+export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes, SummedAreaTable };
