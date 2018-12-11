@@ -6,10 +6,15 @@ import { isGenerator } from '../util.js';
 export default () => {
 	let isLoading = false;
 	let output = '';
-	let solution = 0;
+	let solution = localStorage.getItem('day') || 0;
 
 	let interval;
 	let intervalRunning = false;
+
+	const changeDay = day => {
+		solution = day;
+		localStorage.setItem('day', day);
+	};
 
 	const stopInterval = () => {
 		clearInterval(interval);
@@ -71,7 +76,7 @@ export default () => {
 						(s, index) => ({ value: index, text: `Day ${index + 1}` })
 					),
 					selected: solution,
-					onselect: value => solution = value
+					onselect: changeDay
 				}),
 				m('div', [
 					loadButton('Part 1', () => load(solutions[solution].part1)),

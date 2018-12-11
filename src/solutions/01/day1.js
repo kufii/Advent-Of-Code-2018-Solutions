@@ -19,8 +19,7 @@ export default {
 				value += num;
 				if (history.includes(value)) return yield value;
 				history.push(value);
-				i++;
-				if (i % 1000 === 0) yield 'Running...';
+				if (i++ % 1000 === 0) yield 'Running...';
 			}
 		};
 	},
