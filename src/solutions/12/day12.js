@@ -17,19 +17,22 @@ const parseInput = () => {
 
 const run = function*(n) {
 	let { pots, rules } = parseInput();
-	const getScore = () => Object.entries(pots).filter(([_, pot]) => pot).reduce((count, [index]) => count + parseInt(index), 0);
+
+	const potIndexes = () => Object.entries(pots).filter(([_, pot]) => pot).map(([i]) => parseInt(i));
+	const getScore = () => potIndexes().reduce((count, i) => count + i, 0);
+	const toChar = bool => bool ? '#' : '.';
+	const toRule = i => toChar(pots[i - 2]) + toChar(pots[i - 1]) + toChar(pots[i]) + toChar(pots[i + 1]) + toChar(pots[i + 2]);
+	const expandBounds = () => {
+		const indexes = potIndexes();
+		const min = Math.min(...indexes);
+		const max = Math.max(...indexes);
+		nTimes(i => {
+			pots[min - (i + 1)] = false;
+			pots[max + (i + 1)] = false;
+		}, 3);
+	};
+
 	for (let i = 0; i < n; i++) {
-		const toChar = bool => bool ? '#' : '.';
-		const toRule = i => toChar(pots[i - 2]) + toChar(pots[i - 1]) + toChar(pots[i]) + toChar(pots[i + 1]) + toChar(pots[i + 2]);
-		const expandBounds = () => {
-			const indexes = Object.entries(pots).filter(([_, pot]) => pot).map(([i]) => parseInt(i));
-			const min = Math.min(...indexes);
-			const max = Math.max(...indexes);
-			nTimes(i => {
-				pots[min - (i + 1)] = false;
-				pots[max + (i + 1)] = false;
-			}, 3);
-		};
 		expandBounds();
 		const newPots = {};
 		Object.entries(pots).forEach(([index]) => {
