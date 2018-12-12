@@ -59,6 +59,13 @@ const groupBy = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
+const toDict = (cbKey, cbValue) => (a, b) => {
+	const key = cbKey(b);
+	const value = cbValue ? cbValue(b) : b;
+	a[key] = value;
+	return a;
+};
+
 const nTimes = (cb, n) => {
 	for (let i = 0; i < n; i++) {
 		cb(i);
@@ -86,4 +93,4 @@ class SummedAreaTable {
 	}
 }
 
-export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, nTimes, SummedAreaTable };
+export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, toDict, nTimes, SummedAreaTable };

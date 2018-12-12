@@ -1,5 +1,5 @@
 import input from './input.js';
-import { nTimes, sortBy } from '../../util.js';
+import { nTimes, toDict } from '../../util.js';
 
 const parseInput = () => {
 	const pots = {};
@@ -7,10 +7,10 @@ const parseInput = () => {
 	const [_, initialState] = input.match(/^initial state: ([#.]+)/);
 	initialState.split('').forEach((pot, i) => pots[i] = pot === '#');
 
-	const rules = input.split('\n').filter(line => line).map(line => {
+	const rules = input.split('\n').slice(1).filter(line => line).map(line => {
 		const [rule, result] = line.split(' => ');
 		return { rule, result: result === '#' };
-	});
+	}).reduce(toDict(a => a.rule, a => a.result), {});
 
 	return { pots, rules };
 };
@@ -37,8 +37,8 @@ const run = function*(n) {
 		const newPots = {};
 		Object.entries(pots).forEach(([index]) => {
 			const key = toRule(parseInt(index));
-			const rule = rules.find(r => r.rule === key);
-			newPots[index] = rule ? rule.result : false;
+			const rule = rules[key];
+			newPots[index] = rule || false;
 		});
 		pots = newPots;
 		yield getScore();
