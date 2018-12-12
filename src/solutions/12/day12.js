@@ -2,10 +2,11 @@ import input from './input.js';
 import { nTimes, toDict } from '../../util.js';
 
 const parseInput = () => {
-	const pots = {};
-
 	const [_, initialState] = input.match(/^initial state: ([#.]+)/);
-	initialState.split('').forEach((pot, i) => pots[i] = pot === '#');
+
+	const pots = initialState.split('')
+		.map((pot, key) => ({ key, value: pot === '#' }))
+		.reduce(toDict(a => a.key, a => a.value), {});
 
 	const rules = input.split('\n').slice(1).filter(line => line).map(line => {
 		const [rule, result] = line.split(' => ');
