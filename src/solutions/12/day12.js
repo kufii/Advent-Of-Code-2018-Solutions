@@ -33,6 +33,7 @@ const run = function*(n) {
 		}, 3);
 	};
 
+	yield getScore();
 	for (let i = 0; i < n; i++) {
 		expandBounds();
 		const newPots = {};
@@ -51,9 +52,26 @@ export default {
 		return Array.from(run(20)).pop();
 	},
 	part2() {
-		const firstScores = Array.from(run(200));
-		const differences = firstScores.map((value, index) => value - firstScores[index - 1] || 0);
-		const every100 = differences.slice(100, 200).reduce((a, b) => a + b, 0);
-		return firstScores[firstScores.length - 1] + (every100 * ((50000000000 - 200) / 100));
+		const TIMES = 50000000000;
+
+		let i = -1;
+		const nums = [];
+		let diffs = [];
+		let previousDiff = 0;
+		let patternMatches = 0;
+		for (const sum of run(TIMES)) {
+			if (nums.length > 0) diffs.push(sum - nums[nums.length - 1]);
+			nums.push(sum);
+			i++;
+			if (i > 0 && i % 10 === 0) {
+				const diff = diffs.reduce((a, b) => a + b, 0);
+				diffs = [];
+				patternMatches = diff === previousDiff ? patternMatches + 1 : 0;
+				if (patternMatches === 5) break;
+				previousDiff = diff;
+			}
+		}
+
+		return nums[nums.length - 1] + (previousDiff * ((TIMES - i) / 10));
 	}
 };
