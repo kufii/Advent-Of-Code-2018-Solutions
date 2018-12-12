@@ -36,13 +36,11 @@ const run = function*(n) {
 	yield getScore();
 	for (let i = 0; i < n; i++) {
 		expandBounds();
-		const newPots = {};
-		Object.entries(pots).forEach(([index]) => {
+		pots = Object.entries(pots).map(([index]) => {
 			const key = toRule(parseInt(index));
 			const rule = rules[key];
-			newPots[index] = rule || false;
-		});
-		pots = newPots;
+			return { key: index, value: rule || false };
+		}).reduce(toDict(a => a.key, a => a.value), {});
 		yield getScore();
 	}
 };
