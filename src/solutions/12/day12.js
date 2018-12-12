@@ -72,6 +72,6 @@ export default {
 			}
 		}
 
-		return nums[nums.length - 1] + (previousDiff * ((TIMES - i) / 10));
+		return nums.pop() + (previousDiff * ((TIMES - i) / 10));
 	}
 };
