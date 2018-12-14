@@ -37,14 +37,15 @@ export default {
 		const squares = parseInput();
 		const overlapping = new Set();
 
-		squares.forEach(square1 => {
-			squares
-				.filter(square2 => square2 !== square1)
-				.forEach(
-					square2 => getOverlappingCoords(square1, square2)
-						.forEach(coord => overlapping.add(`${coord.x},${coord.y}`))
-				);
-		});
+		squares.forEach(
+			square1 =>
+				squares
+					.filter(square2 => square2 !== square1)
+					.forEach(
+						square2 => getOverlappingCoords(square1, square2)
+							.forEach(coord => overlapping.add(`${coord.x},${coord.y}`))
+					)
+		);
 
 		return overlapping.size;
 	},
