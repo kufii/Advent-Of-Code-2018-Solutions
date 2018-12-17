@@ -25,7 +25,7 @@ export default {
 			while (!recipes.slice(-(str.length + 1)).join('').includes(str)) {
 				update(recipes, current);
 				i++;
-				if (i % 1000 === 0) yield;
+				if (i % 1000 === 0) yield 'This is slow...';
 			}
 			return yield recipes.join('').indexOf(str);
 		};
