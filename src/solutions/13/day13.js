@@ -22,7 +22,7 @@ const parseInput = () => {
 			const c = track[y][x];
 			if ('^<>v'.includes(c)) {
 				carts.push({ dir: c, pos: { x, y }, lastIntersection: 'right' });
-				track[y][x] = ((track[y - 1] && '|+'.includes(track[y - 1][x])) || (track[y + 1] && '|+'.includes(track[y + 1][x]))) ? '|' : '-';
+				track[y][x] = '<>'.includes(c) ? '-' : '|';
 			}
 		}
 	}
