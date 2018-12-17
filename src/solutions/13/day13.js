@@ -49,11 +49,13 @@ const run = (visualize, removeCollisions=false) => {
 				cart.pos.x += dir.dx;
 				cart.pos.y += dir.dy;
 
-				for (const c of carts.filter(c => c !== cart && !c.dead)) {
-					if (c.pos.x === cart.pos.x && c.pos.y === cart.pos.y) {
-						c.dead = true;
-						cart.dead = true;
-						return;
+				if (removeCollisions) {
+					for (const c of carts.filter(c => c !== cart && !c.dead)) {
+						if (c.pos.x === cart.pos.x && c.pos.y === cart.pos.y) {
+							c.dead = true;
+							cart.dead = true;
+							return;
+						}
 					}
 				}
 
