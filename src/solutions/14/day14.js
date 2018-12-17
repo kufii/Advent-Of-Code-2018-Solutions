@@ -2,9 +2,7 @@ const INPUT = 635041;
 
 const update = (recipes, current) => {
 	recipes.push(...(recipes[current[0]] + recipes[current[1]]).toString().split('').map(n => parseInt(n)));
-	for (let i = 0; i < current.length; i++) {
-		current[i] = (current[i] + recipes[current[i]] + 1) % recipes.length;
-	}
+	current.forEach((value, i) => current[i] = (value + recipes[value] + 1) % recipes.length);
 };
 
 export default {
