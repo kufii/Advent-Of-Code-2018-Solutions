@@ -1,3 +1,5 @@
+import { isString } from './types.js';
+
 const toIterator = (arr, loop=false) => ({
 	*[Symbol.iterator]() {
 		for (let i = 0; i < loop ? Infinity : arr.length; i++) {
@@ -37,24 +39,20 @@ const makeArray = (ySize, xSize=null, fill=null) => {
 	return arr;
 };
 
-const isString = a => typeof a === 'string' || a instanceof String;
-
-const isGenerator = a => a instanceof (function*() { yield; }).constructor;
-
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
 const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
 
 const minBy = cb => (a, b) => cb(b) < cb(a) ? b : a;
 
-const sortBy = (...cb) => (a, b) => {
-	for (let i = 0; i < cb.length; i++) {
-		let diff = 0;
-		if (cb[i].desc) {
-			diff = isString(cb[i].cb(a)) ? cb[i].cb(b).localeCompare(cb[i].cb(a)) : cb[i].cb(b) - cb[i].cb(a);
-		} else {
-			diff = isString(cb[i](a)) ? cb[i](a).localeCompare(cb[i](b)) : cb[i](a) - cb[i](b);
-		}
+const sortBy = (...cbs) => (a, b) => {
+	for (let i = 0; i < cbs.length; i++) {
+		const cb = cbs[i].desc ? cbs[i].cb : cbs[i];
+		const aa = cb(a);
+		const bb = cb(b);
+		const diff = cbs[i].desc
+			? isString(aa) ? bb.localeCompare(aa) : bb - aa
+			: isString(aa) ? aa.localeCompare(bb) : aa - bb;
 		if (diff !== 0) return diff;
 	}
 	return 0;
@@ -104,4 +102,4 @@ class SummedAreaTable {
 	}
 }
 
-export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, desc, groupBy, toDict, nTimes, SummedAreaTable };
+export { toIterator, countOccurances, range, makeArray, distinct, maxBy, minBy, sortBy, desc, groupBy, toDict, nTimes, SummedAreaTable };

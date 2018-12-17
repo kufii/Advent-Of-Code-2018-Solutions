@@ -1,7 +1,7 @@
 import { m } from '../ext-deps.js';
 import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
-import { isGenerator } from '../util.js';
+import { isGenerator } from '../types.js';
 
 const getStorage = (key, def) => typeof localStorage.getItem(key) === 'undefined' ? def : localStorage.getItem(key);
 
