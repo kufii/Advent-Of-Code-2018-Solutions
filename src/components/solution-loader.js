@@ -1,4 +1,4 @@
-import m from 'https://unpkg.com/mithril@next?module';
+import { m } from '../ext-deps.js';
 import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
 import { isGenerator } from '../util.js';

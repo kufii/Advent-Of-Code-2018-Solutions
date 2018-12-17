@@ -1,4 +1,4 @@
-import m from 'https://unpkg.com/mithril@next?module';
+import { m } from '../ext-deps.js';
 
 export default () => ({
 	view: ({ attrs: { options, onselect, selected } }) =>

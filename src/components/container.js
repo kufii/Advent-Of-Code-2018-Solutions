@@ -1,4 +1,4 @@
-import m from 'https://unpkg.com/mithril@next?module';
+import { m } from '../ext-deps.js';
 import SolutionLoader from './solution-loader.js';
 
 export default () => ({
