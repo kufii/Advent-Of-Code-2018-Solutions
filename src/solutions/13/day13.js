@@ -67,10 +67,10 @@ const run = (visualize, removeCollisions=false) => {
 			});
 			if (removeCollisions) {
 				carts = carts.filter(cart => !cart.dead);
-				if (carts.length === 1) return yield `${carts[0].pos.x},${carts[0].pos.y}\n${toString()}`;
+				if (carts.length === 1) return yield `${carts[0].pos.x},${carts[0].pos.y}\n${visualize ? toString() : ''}`;
 			} else {
 				const collisions = carts.filter(hasCollision);
-				if (collisions.length > 0) return yield `${collisions[0].pos.x},${collisions[0].pos.y}\n${toString()}`;
+				if (collisions.length > 0) return yield `${collisions[0].pos.x},${collisions[0].pos.y}\n${visualize ? toString() : ''}`;
 			}
 		}
 	};
