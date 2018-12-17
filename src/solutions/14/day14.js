@@ -1,10 +1,34 @@
-import input from './input.js';
+const INPUT = 635041;
+
+const update = (recipes, current) => {
+	recipes.push(...(recipes[current[0]] + recipes[current[1]]).toString().split('').map(n => parseInt(n)));
+	for (let i = 0; i < current.length; i++) {
+		current[i] = (current[i] + recipes[current[i]] + 1) % recipes.length;
+	}
+};
 
 export default {
 	part1() {
-		return input;
+		const recipes = [3, 7];
+		const current = [0, 1];
+		while (recipes.length < INPUT + 10) {
+			update(recipes, current);
+		}
+		return recipes.slice(INPUT, INPUT + 10).join('');
 	},
 	part2() {
-		return input;
-	}
+		return function*() {
+			const str = INPUT.toString();
+			const recipes = [3, 7];
+			const current = [0, 1];
+			let i = 0;
+			while (!recipes.slice(-(str.length + 1)).join('').includes(str)) {
+				update(recipes, current);
+				i++;
+				if (i % 1000 === 0) yield;
+			}
+			return yield recipes.join('').indexOf(str);
+		};
+	},
+	interval: 0
 };
