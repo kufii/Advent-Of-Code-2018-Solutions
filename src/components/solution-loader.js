@@ -3,11 +3,13 @@ import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
 import { isGenerator } from '../util.js';
 
+const getStorage = (key, def) => typeof localStorage.getItem(key) === 'undefined' ? def : localStorage.getItem(key);
+
 export default () => {
 	let isLoading = false;
 	let output = '';
-	let solution = localStorage.getItem('day') || 0;
-	let showVisualization = true;
+	let solution = getStorage('day', 0);
+	let showVisualization = getStorage('showVisualization', 'true') === 'true';
 
 	let interval;
 	let intervalRunning = false;
@@ -15,6 +17,11 @@ export default () => {
 	const changeDay = day => {
 		solution = day;
 		localStorage.setItem('day', day);
+	};
+
+	const changeShowVisualization = bool => {
+		showVisualization = bool;
+		localStorage.setItem('showVisualization', bool);
 	};
 
 	const stopInterval = () => {
@@ -81,7 +88,7 @@ export default () => {
 				}),
 				m('div', { hidden: !solutions[solution].optionalVisualization }, [
 					m('label', ['Visualize ', m('input[type=checkbox]', {
-						oninput: ({ target: t }) => showVisualization = t.checked,
+						oninput: ({ target: t }) => changeShowVisualization(t.checked),
 						checked: showVisualization
 					})])
 				]),
