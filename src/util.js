@@ -47,9 +47,20 @@ const maxBy = cb => (a, b) => cb(b) > cb(a) ? b : a;
 
 const minBy = cb => (a, b) => cb(b) < cb(a) ? b : a;
 
-const sortBy = cb => (a, b) => isString(cb(a)) ? cb(a).localeCompare(cb(b)) : cb(a) - cb(b);
+const sortBy = (...cb) => (a, b) => {
+	for (let i = 0; i < cb.length; i++) {
+		let diff = 0;
+		if (cb[i].desc) {
+			diff = isString(cb[i].cb(a)) ? cb[i].cb(b).localeCompare(cb[i].cb(a)) : cb[i].cb(b) - cb[i].cb(a);
+		} else {
+			diff = isString(cb[i](a)) ? cb[i](a).localeCompare(cb[i](b)) : cb[i](a) - cb[i](b);
+		}
+		if (diff !== 0) return diff;
+	}
+	return 0;
+};
 
-const sortByDesc = cb => (a, b) => isString(cb(a)) ? cb(b).localeCompare(cb(a)) : cb(b) - cb(a);
+const desc = cb => ({ desc: true, cb });
 
 const groupBy = (cbKey, cbValue) => (a, b) => {
 	const key = cbKey(b);
@@ -93,4 +104,4 @@ class SummedAreaTable {
 	}
 }
 
-export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, sortByDesc, groupBy, toDict, nTimes, SummedAreaTable };
+export { toIterator, countOccurances, range, makeArray, isString, isGenerator, distinct, maxBy, minBy, sortBy, desc, groupBy, toDict, nTimes, SummedAreaTable };

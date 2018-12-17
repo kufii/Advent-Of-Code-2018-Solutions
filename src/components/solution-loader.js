@@ -7,6 +7,7 @@ export default () => {
 	let isLoading = false;
 	let output = '';
 	let solution = localStorage.getItem('day') || 0;
+	let showVisualization = true;
 
 	let interval;
 	let intervalRunning = false;
@@ -34,7 +35,7 @@ export default () => {
 				console.error(err);
 			};
 			try {
-				Promise.resolve(fn())
+				Promise.resolve(fn(showVisualization))
 					.then(data => {
 						isLoading = false;
 						if (isGenerator(data)) {
@@ -78,6 +79,12 @@ export default () => {
 					selected: solution,
 					onselect: changeDay
 				}),
+				m('div', { hidden: !solutions[solution].optionalVisualization }, [
+					m('label', ['Visualize ', m('input[type=checkbox]', {
+						oninput: ({ target: t }) => showVisualization = t.checked,
+						checked: showVisualization
+					})])
+				]),
 				m('div', [
 					loadButton('Part 1', () => load(solutions[solution].part1)),
 					loadButton('Part 2', () => load(solutions[solution].part2))
