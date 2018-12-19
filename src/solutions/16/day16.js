@@ -62,9 +62,8 @@ const computeSamples = samples => {
 	});
 	while (Object.entries(codes).some(([_, list]) => list.length > 1)) {
 		Object.entries(codes).forEach(([code, list]) => {
-			const otherCodes = Object.entries(codes).filter(([c]) => c !== code);
 			if (list.length === 1) {
-				otherCodes.forEach(([key, value]) => {
+				Object.entries(codes).filter(([c]) => c !== code).forEach(([key, value]) => {
 					codes[key] = value.filter(c => c !== list[0]);
 				});
 			}
