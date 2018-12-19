@@ -36,7 +36,7 @@ const dijkstra = (terrain, units, start, end) => {
 	const key = pos => `${pos.x},${pos.y}`;
 	const visited = [];
 	let unvisited = [];
-	const distances = { };
+	const distances = {};
 	const getDistance = pos => distances[key(pos)] || { distance: Infinity };
 	distances[key(start)] = { distance: 0 };
 	let current = start;
@@ -72,28 +72,19 @@ const dijkstra = (terrain, units, start, end) => {
 const aliveUnits = units => units.filter(({ hp }) => hp > 0);
 const getGoblins = units => aliveUnits(units).filter(({ type }) => type === 'G');
 const getElves = units => aliveUnits(units).filter(({ type }) => type === 'E');
+const toString = (terrain, units) => {
+	const board = terrain.slice().map(line => line.map(square => square ? '#' : ' '));
+	aliveUnits(units).forEach(({ type, pos }) => board[pos.y][pos.x] = type);
+	return board.map(line => line.join('')).join('\n');
+};
 
 const runRound = (terrain, units) =>
 	aliveUnits(units).sort(sortBy(({ pos }) => pos.y, ({ pos }) => pos.x)).every(unit => {
-		if (unit.hp < 0) return true;
+		if (unit.hp <= 0) return true;
 		const enemies = unit.type === 'G' ? getElves(units) : getGoblins(units);
 		if (enemies.length === 0) return false;
-		const paths = enemies.map(e => dijkstra(terrain, aliveUnits(units), unit.pos, e.pos)).filter(p => p).sort(sortBy(p => p.length));
-		if (paths.length === 0) return true;
 
-		if (paths[0].length > 1) {
-			const { x, y } = paths.sort(
-				sortBy(
-					p => p.length,
-					p => p[p.length - 1].y,
-					p => p[p.length - 1].x
-				)
-			)[0][0];
-			unit.pos.x = x;
-			unit.pos.y = y;
-		}
-
-		const enemy = enemies.filter(
+		const adjacentEnemy = () => enemies.filter(
 			({ pos }) => Array.from(neighbors(unit.pos)).some(
 				({ x, y }) => pos.x === x && pos.y === y
 			)
@@ -102,6 +93,27 @@ const runRound = (terrain, units) =>
 			({ pos }) => pos.y,
 			({ pos }) => pos.x
 		))[0];
+
+		const move = () => {
+			const paths = enemies.map(e => dijkstra(terrain, aliveUnits(units), unit.pos, e.pos)).filter(p => p).sort(sortBy(p => p.length));
+			if (paths.length === 0) return;
+
+			if (paths[0].length > 1) {
+				const { x, y } = paths.sort(
+					sortBy(
+						p => p.length,
+						p => p[p.length - 2].y,
+						p => p[p.length - 2].x
+					)
+				)[0][0];
+				unit.pos.x = x;
+				unit.pos.y = y;
+			}
+		};
+
+		let enemy = adjacentEnemy();
+		if (!enemy) move();
+		enemy = adjacentEnemy();
 		if (enemy) {
 			enemy.hp -= unit.atk;
 		}
@@ -109,27 +121,47 @@ const runRound = (terrain, units) =>
 		return true;
 	});
 
+const run = function*(terrain, units, visualize) {
+	let rounds = 0;
+	if (!visualize) yield 'Running...';
+	while (true) {
+		if (!visualize && rounds % 5 === 0) yield 'Runnning...';
+		if (visualize) yield `Round: ${rounds}\n${toString(terrain, units)}`;
+		if (!runRound(terrain, units)) break;
+		rounds++;
+	}
+	const score = rounds * aliveUnits(units).reduce((count, { hp }) => count + hp, 0);
+	yield `Score: ${score}\nRound: ${rounds}\n${toString(terrain, units)}`;
+};
+
 export default {
-	part1() {
+	part1(visualize) {
 		const { terrain, units } = parseInput();
-		const toString = () => {
-			const board = terrain.slice().map(line => line.map(square => square ? '#' : ' '));
-			aliveUnits(units).forEach(({ type, pos }) => board[pos.y][pos.x] = type);
-			return board.map(line => line.join('')).join('\n');
-		};
 		return function*() {
-			let rounds = 0;
-			while (true) {
-				yield `Round: ${rounds}\n${toString()}`;
-				if (!runRound(terrain, units)) break;
-				rounds++;
+			for (const out of run(terrain, units, visualize)) {
+				yield out;
 			}
-			const score = rounds * aliveUnits().reduce((count, { hp }) => count + hp, 0);
-			yield `Score: ${score}\nRound: ${rounds}\n${toString()}`;
 		};
 	},
-	part2() {
-		return input;
+	part2(visualize) {
+		return function*() {
+			for (let atk = 4; atk < Infinity; atk++) {
+				const { terrain, units } = parseInput();
+				const elves = getElves(units);
+				const numElves = elves.length;
+				elves.forEach(e => e.atk = atk);
+				let cont = false;
+				for (const out of run(terrain, units, visualize)) {
+					yield `Attack: ${atk}\n${out}`;
+					if (getElves(units).length !== numElves) {
+						cont = true;
+						break;
+					}
+				}
+				if (!cont) break;
+			}
+		};
 	},
-	interval: 0
+	interval: 0,
+	optionalVisualization: true
 };

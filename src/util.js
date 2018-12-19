@@ -75,6 +75,9 @@ const toDict = (cbKey, cbValue) => (a, b) => {
 	return a;
 };
 
+const _flatten = arr => arr.reduce((flat, a) => flat.concat(Array.isArray(a) ? _flatten(a) : a), []);
+const flatten = (flat, arr) => flat.concat(_flatten(arr));
+
 const nTimes = (cb, n) => {
 	for (let i = 0; i < n; i++) {
 		cb(i);
@@ -102,4 +105,4 @@ class SummedAreaTable {
 	}
 }
 
-export { toIterator, countOccurances, range, makeArray, distinct, maxBy, minBy, sortBy, desc, groupBy, toDict, nTimes, SummedAreaTable };
+export { toIterator, countOccurances, range, makeArray, distinct, maxBy, minBy, sortBy, desc, groupBy, toDict, flatten, nTimes, SummedAreaTable };

@@ -6,7 +6,7 @@ const obj = [
 	'Date',
 	'RegExp'
 ].reduce((obj, name) => {
-	obj[`is${name}`] = x => toString.call(x) === `[object ${name}]`;
+	obj[`is${name}`] = a => toString.call(a) === `[object ${name}]`;
 	return obj;
 }, {
 	isGenerator: a => a instanceof (function*() { yield; }).constructor
