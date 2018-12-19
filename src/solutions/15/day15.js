@@ -69,55 +69,59 @@ const dijkstra = (terrain, units, start, end) => {
 	return null;
 };
 
+const aliveUnits = units => units.filter(({ hp }) => hp > 0);
+const getGoblins = units => aliveUnits(units).filter(({ type }) => type === 'G');
+const getElves = units => aliveUnits(units).filter(({ type }) => type === 'E');
+
+const runRound = (terrain, units) =>
+	aliveUnits(units).sort(sortBy(({ pos }) => pos.y, ({ pos }) => pos.x)).every(unit => {
+		if (unit.hp < 0) return true;
+		const enemies = unit.type === 'G' ? getElves(units) : getGoblins(units);
+		if (enemies.length === 0) return false;
+		const paths = enemies.map(e => dijkstra(terrain, aliveUnits(units), unit.pos, e.pos)).filter(p => p).sort(sortBy(p => p.length));
+		if (paths.length === 0) return true;
+
+		if (paths[0].length > 1) {
+			const { x, y } = paths.sort(
+				sortBy(
+					p => p.length,
+					p => p[p.length - 1].y,
+					p => p[p.length - 1].x
+				)
+			)[0][0];
+			unit.pos.x = x;
+			unit.pos.y = y;
+		}
+
+		const enemy = enemies.filter(
+			({ pos }) => Array.from(neighbors(unit.pos)).some(
+				({ x, y }) => pos.x === x && pos.y === y
+			)
+		).sort(sortBy(
+			({ hp }) => hp,
+			({ pos }) => pos.y,
+			({ pos }) => pos.x
+		))[0];
+		if (enemy) {
+			enemy.hp -= unit.atk;
+		}
+
+		return true;
+	});
+
 export default {
 	part1() {
 		const { terrain, units } = parseInput();
 		const toString = () => {
 			const board = terrain.slice().map(line => line.map(square => square ? '#' : ' '));
-			aliveUnits().forEach(({ type, pos }) => board[pos.y][pos.x] = type);
+			aliveUnits(units).forEach(({ type, pos }) => board[pos.y][pos.x] = type);
 			return board.map(line => line.join('')).join('\n');
 		};
-		const aliveUnits = () => units.filter(({ hp }) => hp > 0);
-		const getGoblins = () => aliveUnits().filter(({ type }) => type === 'G');
-		const getElves = () => aliveUnits().filter(({ type }) => type === 'E');
 		return function*() {
 			let rounds = 0;
 			while (true) {
 				yield `Round: ${rounds}\n${toString()}`;
-				if (!aliveUnits().sort(sortBy(({ pos }) => pos.y, ({ pos }) => pos.x)).every(unit => {
-					if (unit.hp < 0) return true;
-					const enemies = unit.type === 'G' ? getElves() : getGoblins();
-					if (enemies.length === 0) return false;
-					const paths = enemies.map(e => dijkstra(terrain, aliveUnits(), unit.pos, e.pos)).filter(p => p).sort(sortBy(p => p.length));
-					if (paths.length === 0) return true;
-
-					if (paths[0].length > 1) {
-						const { x, y } = paths.sort(
-							sortBy(
-								p => p.length,
-								p => p[p.length - 1].y,
-								p => p[p.length - 1].x
-							)
-						)[0][0];
-						unit.pos.x = x;
-						unit.pos.y = y;
-					}
-
-					const enemy = enemies.filter(
-						({ pos }) => Array.from(neighbors(unit.pos)).some(
-							({ x, y }) => pos.x === x && pos.y === y
-						)
-					).sort(sortBy(
-						({ hp }) => hp,
-						({ pos }) => pos.y,
-						({ pos }) => pos.x
-					))[0];
-					if (enemy) {
-						enemy.hp -= unit.atk;
-					}
-
-					return true;
-				})) break;
+				if (!runRound(terrain, units)) break;
 				rounds++;
 			}
 			const score = rounds * aliveUnits().reduce((count, { hp }) => count + hp, 0);
