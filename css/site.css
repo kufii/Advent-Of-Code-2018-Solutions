@@ -39,5 +39,5 @@ h1 {
 
 pre {
 	line-height: 1em;
-	overflow-y: hidden;
+	padding: 5px;
 }
