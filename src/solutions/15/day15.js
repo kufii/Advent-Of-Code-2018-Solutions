@@ -18,12 +18,12 @@ const parseInput = () => {
 	return { terrain, units };
 };
 
-const neighbors = function*({ x, y }) {
-	yield { x, y: y - 1 };
-	yield { x: x - 1, y };
-	yield { x: x + 1, y };
-	yield { x, y: y + 1 };
-};
+const neighbors = ({ x, y }) => [
+	{ x, y: y - 1 },
+	{ x: x - 1, y },
+	{ x: x + 1, y },
+	{ x, y: y + 1 }
+];
 
 const dijkstra = (terrain, units, start, end) => {
 	const map = terrain.map(
@@ -42,7 +42,7 @@ const dijkstra = (terrain, units, start, end) => {
 	let current = start;
 	while (current) {
 		unvisited.push(
-			...Array.from(neighbors(current))
+			...neighbors(current)
 				.filter(({ x, y }) => !map[y][x])
 				.filter(({ x, y }) => !unvisited.some(n => n.x === x && n.y === y))
 				.filter(({ x, y }) => !visited.some(n => n.x === x && n.y === y))
@@ -85,7 +85,7 @@ const runRound = (terrain, units) =>
 		if (enemies.length === 0) return false;
 
 		const adjacentEnemy = () => enemies.filter(
-			({ pos }) => Array.from(neighbors(unit.pos)).some(
+			({ pos }) =>neighbors(unit.pos).some(
 				({ x, y }) => pos.x === x && pos.y === y
 			)
 		).sort(sortBy(
