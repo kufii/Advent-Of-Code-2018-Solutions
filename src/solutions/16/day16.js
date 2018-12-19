@@ -1,22 +1,22 @@
 import input from './input.js';
 
 const ops = {
-	addr: (reg, a, b) => reg[a] + reg[b],
-	addi: (reg, a, b) => reg[a] + b,
-	mulr: (reg, a, b) => reg[a] * reg[b],
-	muli: (reg, a, b) => reg[a] * b,
-	banr: (reg, a, b) => reg[a] & reg[b],
-	bani: (reg, a, b) => reg[a] & b,
-	borr: (reg, a, b) => reg[a] | reg[b],
-	bori: (reg, a, b) => reg[a] | b,
-	setr: (reg, a) => reg[a],
-	seti: (reg, a) => a,
-	gtir: (reg, a, b) => a > reg[b] ? 1 : 0,
-	gtri: (reg, a, b) => reg[a] > b ? 1 : 0,
-	gtrr: (reg, a, b) => reg[a] > reg[b] ? 1 : 0,
-	eqir: (reg, a, b) => a === reg[b] ? 1 : 0,
-	eqri: (reg, a, b) => reg[a] === b ? 1 : 0,
-	eqrr: (reg, a, b) => reg[a] === reg[b] ? 1 : 0
+	addr: (r, a, b) => r[a] + r[b],
+	addi: (r, a, b) => r[a] + b,
+	mulr: (r, a, b) => r[a] * r[b],
+	muli: (r, a, b) => r[a] * b,
+	banr: (r, a, b) => r[a] & r[b],
+	bani: (r, a, b) => r[a] & b,
+	borr: (r, a, b) => r[a] | r[b],
+	bori: (r, a, b) => r[a] | b,
+	setr: (r, a) => r[a],
+	seti: (r, a) => a,
+	gtir: (r, a, b) => a > r[b] ? 1 : 0,
+	gtri: (r, a, b) => r[a] > b ? 1 : 0,
+	gtrr: (r, a, b) => r[a] > r[b] ? 1 : 0,
+	eqir: (r, a, b) => a === r[b] ? 1 : 0,
+	eqri: (r, a, b) => r[a] === b ? 1 : 0,
+	eqrr: (r, a, b) => r[a] === r[b] ? 1 : 0
 };
 
 const parseInput = () => {
