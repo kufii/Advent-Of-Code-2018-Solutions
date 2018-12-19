@@ -74,9 +74,6 @@ export default {
 		const { terrain, units } = parseInput();
 		const toString = () => {
 			const board = terrain.slice().map(line => line.map(square => square ? '#' : ' '));
-			// const goblin = getGoblins()[0];
-			// const elf = getElves()[0];
-			// dijkstra(terrain, units, goblin.pos, elf.pos).forEach(({ x, y }) => board[y][x] = '+');
 			aliveUnits().forEach(({ type, pos }) => board[pos.y][pos.x] = type);
 			return board.map(line => line.join('')).join('\n');
 		};
