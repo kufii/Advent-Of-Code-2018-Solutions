@@ -3,7 +3,7 @@ import Select from './select.js';
 import solutions from '../solutions/all-solutions.js';
 import { isGenerator } from '../types.js';
 
-const getStorage = (key, def) => typeof localStorage.getItem(key) === 'undefined' ? def : localStorage.getItem(key);
+const getStorage = (key, def) => localStorage.getItem(key) == null ? def : localStorage.getItem(key);
 
 export default () => {
 	let isLoading = false;
