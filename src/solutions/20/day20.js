@@ -98,6 +98,8 @@ export default {
 		return Math.max(...Object.entries(distances).map(([_, { distance }]) => distance));
 	},
 	part2() {
-		return input;
+		const rooms = parseInput();
+		const distances = dijkstra(rooms, rooms[0]);
+		return Object.entries(distances).filter(([_, { distance }]) => distance >= 1000).length;
 	}
 };
