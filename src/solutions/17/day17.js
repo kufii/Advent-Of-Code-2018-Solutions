@@ -31,11 +31,10 @@ const parseInput = () => {
 };
 
 export default {
-	part1() {
+	part1(visualize) {
 		const arr = parseInput();
 		const toString = () => arr.map(line => line.join('')).join('\n');
 		return function*() {
-			yield toString();
 			let unresolved = [];
 			arr.forEach((line, y) => line.forEach((cell, x) => cell === '|' ? unresolved.push({ x, y }) : null));
 
@@ -73,6 +72,7 @@ export default {
 			};
 
 			while (unresolved.length > 0) {
+				if (visualize) yield toString();
 				for (const pos of unresolved.slice()) {
 					let y;
 					for (y = pos.y + 1; y < arr.length && arr[y][pos.x] === ' '; y++) {
@@ -80,17 +80,17 @@ export default {
 					}
 					y--;
 					if (y < arr.length - 1 && !' |'.includes(arr[y + 1][pos.x])) fill(pos.x, y);
-					yield toString();
 					unresolved = unresolved.filter(p => p !== pos);
 				}
 			}
 			const water = arr.map(line => line.reduce((count, a) => count + ('|~'.includes(a) ? 1 : 0), 0))
 				.reduce((count, num) => count + num, 0);
-			yield `Water: ${water}\n${toString()}`;
+			yield visualize ? `Water: ${water}\n${toString()}` : `Water: ${water}`;
 		};
 	},
 	part2() {
 		return input;
 	},
-	interval: 100
+	interval: 1000,
+	optionalVisualization: true
 };
