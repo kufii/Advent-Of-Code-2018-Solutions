@@ -31,7 +31,7 @@ const parseInput = () => {
 				parse(contents, prev);
 			} else if (dir === '|') {
 				prev = room;
-			} else if (dir !== ')') {
+			} else {
 				prev.doors.add(dir);
 				let { x, y } = prev;
 				x += DIRS[dir].dx;
@@ -75,8 +75,8 @@ const dijkstra = (rooms, start) => {
 	while (current) {
 		unvisited.push(
 			...neighbors(current)
-				.filter(({ x, y }) => !unvisited.some(n => n.x === x && n.y === y))
-				.filter(({ x, y }) => !visited.some(n => n.x === x && n.y === y))
+				.filter(node => !unvisited.some(n => n === node))
+				.filter(node => !visited.some(n => n === node))
 		);
 		unvisited.forEach(pos => {
 			const distance = getDistance(current).distance + 1;
