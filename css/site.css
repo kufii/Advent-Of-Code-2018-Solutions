@@ -2,6 +2,7 @@ html,
 body {
 	font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	line-height: 1.6;
+	tab-size: 4;
 }
 
 .container {
