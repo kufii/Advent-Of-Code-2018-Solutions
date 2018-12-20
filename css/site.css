@@ -19,6 +19,12 @@ body {
 	letter-spacing: 0.05em;
 }
 
+.controls {
+	background-color: white;
+	position: sticky;
+	top: 0;
+}
+
 h1,
 h2,
 h3,
@@ -41,4 +47,5 @@ h1 {
 pre {
 	line-height: 1em;
 	padding: 5px;
+	overflow: visible;
 }

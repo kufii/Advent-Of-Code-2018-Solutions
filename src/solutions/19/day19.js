@@ -1,18 +1,5 @@
 import input from './input.js';
 
-const PSEUDO_CODE = `
-r0 = 0
-r2 = 1
-r4 = 10551326
-
-do {
-	if (r4 % r2 === 0) r0 += r2
-	r2++
-} while (r2 <= r4)
-
-return r0
-`;
-
 const ops = {
 	addr: (r, a, b) => r[a] + r[b],
 	addi: (r, a, b) => r[a] + b,
@@ -72,7 +59,8 @@ export default {
 
 			return r0;
 		};
-		return `${solution()}\nManually Solved Pseudo Code:\n<pre style='display:inline-block;text-align:left'>${PSEUDO_CODE}</span>`;
+		const getText = () => solution.toString().split('\n').slice(1, -1).join('\n');
+		return `${solution()}\nManually Solved Code:\n<pre style='display:inline-block;text-align:left'>${getText()}</span>`;
 	},
 	html: true
 };

@@ -79,26 +79,28 @@ export default () => {
 
 	return {
 		view: () =>
-			m('div.pure-form', [
-				m('label', 'Day: '),
-				m(Select, {
-					options: solutions.map(
-						(s, index) => ({ value: index, text: `Day ${index + 1}` })
-					),
-					selected: solution,
-					onselect: changeDay
-				}),
-				m('div', { hidden: !solutions[solution].optionalVisualization }, [
-					m('label', ['Visualize ', m('input[type=checkbox]', {
-						oninput: ({ target: t }) => changeShowVisualization(t.checked),
-						checked: showVisualization
-					})])
+			m('div', [
+				m('div.pure-form.controls', [
+					m('label', 'Day: '),
+					m(Select, {
+						options: solutions.map(
+							(s, index) => ({ value: index, text: `Day ${index + 1}` })
+						),
+						selected: solution,
+						onselect: changeDay
+					}),
+					m('div', { hidden: !solutions[solution].optionalVisualization }, [
+						m('label', ['Visualize ', m('input[type=checkbox]', {
+							oninput: ({ target: t }) => changeShowVisualization(t.checked),
+							checked: showVisualization
+						})])
+					]),
+					m('div', [
+						loadButton('Part 1', () => load(solutions[solution].part1)),
+						loadButton('Part 2', () => load(solutions[solution].part2))
+					]),
+					m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!'))
 				]),
-				m('div', [
-					loadButton('Part 1', () => load(solutions[solution].part1)),
-					loadButton('Part 2', () => load(solutions[solution].part2))
-				]),
-				m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!')),
 				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output) : output)
 			])
 	};
