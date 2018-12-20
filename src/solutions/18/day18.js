@@ -2,41 +2,64 @@ import input from './input.js';
 
 const parseInput = () => input.split('\n').map(line => line.split(''));
 
-export default {
-	part1() {
-		let area = parseInput();
-		const toString = () => area.map(line => line.join('')).join('\n');
-		const getCount = type => area.map(line => line.filter(cell => cell === type).length).reduce((count, n) => count + n, 0);
-		const adjacent = function*(x, y) {
-			for (let yy = y - 1; yy <= y + 1; yy++) {
-				for (let xx = x - 1; xx <= x + 1; xx++) {
-					if (xx < 0 || yy < 0 || yy >= area.length || xx >= area[yy].length || (xx === x && yy === y)) {
-						continue;
-					}
-					yield { x: xx, y: yy };
+const run = function*(times, visualize, yieldScore=false) {
+	let area = parseInput();
+	const toString = () => area.map(line => line.join('')).join('\n');
+	const getCount = type => area.map(line => line.filter(cell => cell === type).length).reduce((count, n) => count + n, 0);
+	const adjacent = function*(x, y) {
+		for (let yy = y - 1; yy <= y + 1; yy++) {
+			for (let xx = x - 1; xx <= x + 1; xx++) {
+				if (xx < 0 || yy < 0 || yy >= area.length || xx >= area[yy].length || (xx === x && yy === y)) {
+					continue;
 				}
+				yield { x: xx, y: yy };
 			}
-		};
+		}
+	};
+	const getValue = () => getCount('|') * getCount('#');
+	const history = [JSON.stringify(area)];
+
+	for (let i = 0; i < times; i++) {
+		if (visualize) yield `Minutes: ${i}\n${toString()}`;
+		area = area.map((line, y) => line.map((cell, x) => {
+			const neighbors = Array.from(adjacent(x, y));
+			return {
+				'.': () => neighbors.filter(({ x, y }) => area[y][x] === '|').length >= 3 ? '|' : '.',
+				'|': () => neighbors.filter(({ x, y }) => area[y][x] === '#').length >= 3 ? '#' : '|',
+				'#': () => neighbors.some(({ x, y }) => area[y][x] === '#')
+					&& neighbors.some(({ x, y }) => area[y][x] === '|') ? '#' : '.'
+			}[cell]();
+		}));
+		const serial = JSON.stringify(area);
+		const index = history.indexOf(serial);
+		if (index !== -1) {
+			i++;
+			const cycle = i - index;
+			const remaining = (times - i) % cycle;
+			area = JSON.parse(history.slice(index)[remaining]);
+			break;
+		}
+		history.push(serial);
+	}
+	if (visualize) {
+		yield `Value: ${getValue()}\nMinutes: ${times}\n${toString()}`;
+	} else if (yieldScore) {
+		yield getValue();
+	}
+};
+
+export default {
+	part1(visualize) {
 		return function*() {
-			let i;
-			for (i = 0; i < 10; i++) {
-				yield `Minutes: ${i}\n${toString()}`;
-				area = area.map((line, y) => line.map((cell, x) => {
-					const neighbors = Array.from(adjacent(x, y));
-					return {
-						'.': () => neighbors.filter(({ x, y }) => area[y][x] === '|').length >= 3 ? '|' : '.',
-						'|': () => neighbors.filter(({ x, y }) => area[y][x] === '#').length >= 3 ? '#' : '|',
-						'#': () => neighbors.some(({ x, y }) => area[y][x] === '#')
-							&& neighbors.some(({ x, y }) => area[y][x] === '|') ? '#' : '.'
-					}[cell]();
-				}));
+			for (const out of run(10, visualize)) {
+				yield out;
 			}
-			const value = getCount('|') * getCount('#');
-			yield `Value: ${value}\nMinutes: ${i}\n${toString()}`;
 		};
 	},
 	part2() {
-		return input;
+		const TIMES = 1000000000;
+		return Array.from(run(TIMES, false, true)).pop();
 	},
-	interval: 1000
+	interval: 1000,
+	optionalVisualization: true
 };
