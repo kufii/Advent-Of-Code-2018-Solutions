@@ -17,10 +17,21 @@ const run = function*(times, visualize) {
 		}
 	};
 	const getValue = () => getCount('|') * getCount('#');
-	const history = [JSON.stringify(area)];
+	const history = [];
 
 	for (let i = 0; i < times; i++) {
 		if (visualize) yield `Minutes: ${i}\n${toString()}`;
+
+		const serial = JSON.stringify(area);
+		const index = history.indexOf(serial);
+		if (index !== -1) {
+			const cycle = i - index;
+			const remaining = (times - i) % cycle;
+			area = JSON.parse(history.slice(index)[remaining]);
+			break;
+		}
+		history.push(serial);
+
 		area = area.map((line, y) => line.map((cell, x) => {
 			const neighbors = Array.from(adjacent(x, y));
 			return {
@@ -30,16 +41,6 @@ const run = function*(times, visualize) {
 					&& neighbors.some(({ x, y }) => area[y][x] === '|') ? '#' : '.'
 			}[cell]();
 		}));
-		const serial = JSON.stringify(area);
-		const index = history.indexOf(serial);
-		if (index !== -1) {
-			i++;
-			const cycle = i - index;
-			const remaining = (times - i) % cycle;
-			area = JSON.parse(history.slice(index)[remaining]);
-			break;
-		}
-		history.push(serial);
 	}
 	if (visualize) {
 		yield `Value: ${getValue()}\nMinutes: ${times}\n${toString()}`;
