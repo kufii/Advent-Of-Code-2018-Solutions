@@ -30,66 +30,74 @@ const parseInput = () => {
 	return arr;
 };
 
-export default {
-	part1(visualize) {
-		const arr = parseInput();
-		const toString = () => arr.map(line => line.join('')).join('\n');
-		return function*() {
-			let unresolved = [];
-			arr.forEach((line, y) => line.forEach((cell, x) => cell === '|' ? unresolved.push({ x, y }) : null));
+const run = visualize => {
+	const arr = parseInput();
+	const toString = () => arr.map(line => line.join('')).join('\n');
+	const getCount = tile => arr.map(line => line.reduce((count, a) => count + (a === tile ? 1 : 0), 0))
+		.reduce((count, num) => count + num, 0);
 
-			const fill = (x, y) => {
-				for (let yy = y; yy >= 0; yy--) {
-					let xx;
-					let overflow = false;
-					const checkOverflow = () => {
-						if (' |'.includes(arr[yy + 1][xx])) {
-							arr[yy][xx] = '|';
-							overflow = true;
-							if (arr[yy + 1][xx] === ' ') unresolved.push({ x: xx, y: yy });
-							return true;
-						}
-						return false;
-					};
-					for (xx = x; arr[yy][xx] !== '#'; xx--) {
-						arr[yy][xx] = '~';
-						if (checkOverflow()) break;
+	return function*() {
+		let unresolved = [];
+		arr.forEach((line, y) => line.forEach((cell, x) => cell === '|' ? unresolved.push({ x, y }) : null));
+
+		const fill = (x, y) => {
+			for (let yy = y; yy >= 0; yy--) {
+				let xx;
+				let overflow = false;
+				const checkOverflow = () => {
+					if (' |'.includes(arr[yy + 1][xx])) {
+						arr[yy][xx] = '|';
+						overflow = true;
+						if (arr[yy + 1][xx] === ' ') unresolved.push({ x: xx, y: yy });
+						return true;
 					}
-					for (xx = x + 1; arr[yy][xx] !== '#'; xx++) {
-						arr[yy][xx] = '~';
-						if (checkOverflow()) break;
-					}
-					if (overflow) {
-						for (xx = x; arr[yy][xx] === '~'; xx--) {
-							arr[yy][xx] = '|';
-						}
-						for (xx = x + 1; arr[yy][xx] === '~'; xx++) {
-							arr[yy][xx] = '|';
-						}
-						break;
-					}
+					return false;
+				};
+				for (xx = x; arr[yy][xx] !== '#'; xx--) {
+					arr[yy][xx] = '~';
+					if (checkOverflow()) break;
 				}
-			};
-
-			while (unresolved.length > 0) {
-				if (visualize) yield toString();
-				for (const pos of unresolved.slice()) {
-					let y;
-					for (y = pos.y + 1; y < arr.length && arr[y][pos.x] === ' '; y++) {
-						arr[y][pos.x] = '|';
+				for (xx = x + 1; arr[yy][xx] !== '#'; xx++) {
+					arr[yy][xx] = '~';
+					if (checkOverflow()) break;
+				}
+				if (overflow) {
+					for (xx = x; arr[yy][xx] === '~'; xx--) {
+						arr[yy][xx] = '|';
 					}
-					y--;
-					if (y < arr.length - 1 && !' |'.includes(arr[y + 1][pos.x])) fill(pos.x, y);
-					unresolved = unresolved.filter(p => p !== pos);
+					for (xx = x + 1; arr[yy][xx] === '~'; xx++) {
+						arr[yy][xx] = '|';
+					}
+					break;
 				}
 			}
-			const water = arr.map(line => line.reduce((count, a) => count + ('|~'.includes(a) ? 1 : 0), 0))
-				.reduce((count, num) => count + num, 0);
-			yield visualize ? `Water: ${water}\n${toString()}` : `Water: ${water}`;
 		};
+
+		while (unresolved.length > 0) {
+			if (visualize) yield toString();
+			for (const pos of unresolved.slice()) {
+				let y;
+				for (y = pos.y + 1; y < arr.length && arr[y][pos.x] === ' '; y++) {
+					arr[y][pos.x] = '|';
+				}
+				y--;
+				if (y < arr.length - 1 && !' |'.includes(arr[y + 1][pos.x])) fill(pos.x, y);
+				unresolved = unresolved.filter(p => p !== pos);
+			}
+		}
+		const stillWater = getCount('~');
+		const runningWater = getCount('|');
+		const result = `Total Water: ${stillWater + runningWater}\nStill Water: ${stillWater}`;
+		yield visualize ? `${result}\n${toString()}` : result;
+	};
+};
+
+export default {
+	part1(visualize) {
+		return run(visualize);
 	},
-	part2() {
-		return input;
+	part2(visualize) {
+		return run(visualize);
 	},
 	interval: 1000,
 	optionalVisualization: true
