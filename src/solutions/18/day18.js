@@ -2,7 +2,7 @@ import input from './input.js';
 
 const parseInput = () => input.split('\n').map(line => line.split(''));
 
-const run = function*(times, visualize, yieldScore=false) {
+const run = function*(times, visualize) {
 	let area = parseInput();
 	const toString = () => area.map(line => line.join('')).join('\n');
 	const getCount = type => area.map(line => line.filter(cell => cell === type).length).reduce((count, n) => count + n, 0);
@@ -43,7 +43,7 @@ const run = function*(times, visualize, yieldScore=false) {
 	}
 	if (visualize) {
 		yield `Value: ${getValue()}\nMinutes: ${times}\n${toString()}`;
-	} else if (yieldScore) {
+	} else {
 		yield getValue();
 	}
 };
@@ -56,10 +56,13 @@ export default {
 			}
 		};
 	},
-	part2() {
-		const TIMES = 1000000000;
-		return Array.from(run(TIMES, false, true)).pop();
+	part2(visualize) {
+		return function*() {
+			for (const out of run(1000000000, visualize)) {
+				yield out;
+			}
+		};
 	},
-	interval: 1000,
+	interval: 100,
 	optionalVisualization: true
 };
