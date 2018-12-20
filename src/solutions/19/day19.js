@@ -59,7 +59,7 @@ export default {
 
 			return r0;
 		};
-		const getText = () => solution.toString().split('\n').slice(1, -1).join('\n');
+		const getText = () => solution.toString().split('\n').slice(1, -1).map(line => line.replace('\t\t\t', '')).join('\n');
 		return `${solution()}\nManually Solved Code:\n<pre style='display:inline-block;text-align:left'>${getText()}</span>`;
 	},
 	html: true
