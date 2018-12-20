@@ -14,19 +14,21 @@ export default () => {
 	let interval;
 	let intervalRunning = false;
 
+	const stopInterval = () => {
+		clearInterval(interval);
+		intervalRunning = false;
+	};
+
 	const changeDay = day => {
+		stopInterval();
 		solution = day;
 		localStorage.setItem('day', day);
+		output = '';
 	};
 
 	const changeShowVisualization = bool => {
 		showVisualization = bool;
 		localStorage.setItem('showVisualization', bool);
-	};
-
-	const stopInterval = () => {
-		clearInterval(interval);
-		intervalRunning = false;
 	};
 
 	const load = fn => {
@@ -97,7 +99,7 @@ export default () => {
 					loadButton('Part 2', () => load(solutions[solution].part2))
 				]),
 				m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!')),
-				m('pre', isLoading ? 'Loading...' : output)
+				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output) : output)
 			])
 	};
 };

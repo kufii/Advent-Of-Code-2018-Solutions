@@ -32,7 +32,11 @@ const parseInput = () => {
 
 const run = visualize => {
 	const arr = parseInput();
-	const toString = () => arr.map(line => line.join('')).join('\n');
+	const toString = () => `<pre style="font-size: 10px;">${
+		arr.map(
+			line => line.map(c => '~|'.includes(c) ? `<span style="color: blue">${c}</span>` : c).join('')
+		).join('\n')
+	}</pre>`;
 	const getCount = tile => arr.map(line => line.reduce((count, a) => count + (a === tile ? 1 : 0), 0))
 		.reduce((count, num) => count + num, 0);
 
@@ -100,5 +104,6 @@ export default {
 		return run(visualize);
 	},
 	interval: 1000,
-	optionalVisualization: true
+	optionalVisualization: true,
+	html: true
 };
