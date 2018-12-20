@@ -17,8 +17,8 @@ const run = function*(times, visualize) {
 		}
 	};
 	const getValue = () => getCount('|') * getCount('#');
-	const history = [];
 
+	const history = [];
 	for (let i = 0; i < times; i++) {
 		if (visualize) yield `Minutes: ${i}\n${toString()}`;
 
@@ -42,11 +42,7 @@ const run = function*(times, visualize) {
 			}[cell]();
 		}));
 	}
-	if (visualize) {
-		yield `Value: ${getValue()}\nMinutes: ${times}\n${toString()}`;
-	} else {
-		yield getValue();
-	}
+	yield visualize ? `Value: ${getValue()}\nMinutes: ${times}\n${toString()}` : getValue();
 };
 
 export default {
