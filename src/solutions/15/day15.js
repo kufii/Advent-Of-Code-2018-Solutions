@@ -85,7 +85,7 @@ const runRound = (terrain, units) =>
 		if (enemies.length === 0) return false;
 
 		const adjacentEnemy = () => enemies.filter(
-			({ pos }) =>neighbors(unit.pos).some(
+			({ pos }) => neighbors(unit.pos).some(
 				({ x, y }) => pos.x === x && pos.y === y
 			)
 		).sort(sortBy(
