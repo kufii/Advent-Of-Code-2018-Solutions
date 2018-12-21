@@ -55,13 +55,13 @@ export default () => {
 								if (done) {
 									stopInterval();
 								} else {
-									output = value;
+									output = value.toString();
 								}
 								m.redraw();
 							}, solutions[day].interval);
 							intervalRunning = true;
 						} else {
-							output = data;
+							output = data.toString();
 						}
 					})
 					.then(m.redraw)
@@ -101,7 +101,7 @@ export default () => {
 					]),
 					m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!'))
 				]),
-				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output.toString()) : output)
+				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output) : output)
 			])
 	};
 };
