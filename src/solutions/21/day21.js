@@ -72,7 +72,7 @@ export default {
 		};
 		/* eslint-enable no-constant-condition */
 		const getText = () => solution.toString().split('\n').slice(1, -1).map(line => line.replace('\t\t\t', '')).join('\n');
-		return `${solution()}\nManually Solved Code:\n<pre style='display:inline-block;text-align:left'>${getText()}</span>`;
+		return `${solution()}\nReverse Engineered Code:\n<pre style='display:inline-block;text-align:left'>${getText()}</span>`;
 	},
 	html: true
 };
