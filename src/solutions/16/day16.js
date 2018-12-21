@@ -1,26 +1,8 @@
 import input from './input.js';
-
-const ops = {
-	addr: (r, a, b) => r[a] + r[b],
-	addi: (r, a, b) => r[a] + b,
-	mulr: (r, a, b) => r[a] * r[b],
-	muli: (r, a, b) => r[a] * b,
-	banr: (r, a, b) => r[a] & r[b],
-	bani: (r, a, b) => r[a] & b,
-	borr: (r, a, b) => r[a] | r[b],
-	bori: (r, a, b) => r[a] | b,
-	setr: (r, a) => r[a],
-	seti: (r, a) => a,
-	gtir: (r, a, b) => a > r[b] ? 1 : 0,
-	gtri: (r, a, b) => r[a] > b ? 1 : 0,
-	gtrr: (r, a, b) => r[a] > r[b] ? 1 : 0,
-	eqir: (r, a, b) => a === r[b] ? 1 : 0,
-	eqri: (r, a, b) => r[a] === b ? 1 : 0,
-	eqrr: (r, a, b) => r[a] === r[b] ? 1 : 0
-};
+import { ops, build } from '../common/elfcode.js';
 
 const parseInput = () => {
-	let [samples, program] = input.split('\n\n\n');
+	let [samples, programtext] = input.split('\n\n\n');
 	samples = samples.trim().split('\n\n').map(s => {
 		const [before, op, after] = s.split('\n');
 		const regex = /(\[.+\])/;
@@ -36,15 +18,7 @@ const parseInput = () => {
 			out: JSON.parse(out)
 		};
 	});
-	program = program.trim().split('\n').map(op => {
-		const [code, a, b, c] = op.split(' ');
-		return {
-			code: parseInt(code),
-			a: parseInt(a),
-			b: parseInt(b),
-			c: parseInt(c)
-		};
-	});
+	const { program } = build(programtext);
 	return { samples, program };
 };
 

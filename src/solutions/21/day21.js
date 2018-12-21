@@ -1,51 +1,14 @@
 import input from './input.js';
-
-const ops = {
-	addr: (r, a, b) => r[a] + r[b],
-	addi: (r, a, b) => r[a] + b,
-	mulr: (r, a, b) => r[a] * r[b],
-	muli: (r, a, b) => r[a] * b,
-	banr: (r, a, b) => r[a] & r[b],
-	bani: (r, a, b) => r[a] & b,
-	borr: (r, a, b) => r[a] | r[b],
-	bori: (r, a, b) => r[a] | b,
-	setr: (r, a) => r[a],
-	seti: (r, a) => a,
-	gtir: (r, a, b) => a > r[b] ? 1 : 0,
-	gtri: (r, a, b) => r[a] > b ? 1 : 0,
-	gtrr: (r, a, b) => r[a] > r[b] ? 1 : 0,
-	eqir: (r, a, b) => a === r[b] ? 1 : 0,
-	eqri: (r, a, b) => r[a] === b ? 1 : 0,
-	eqrr: (r, a, b) => r[a] === r[b] ? 1 : 0
-};
-
-const parseInput = () => {
-	const lines = input.split('\n');
-	const bound = parseInt(lines[0].split(' ')[1]);
-	const program = lines.slice(1).map(line => {
-		const [op, a, b, c] = line.split(' ');
-		return {
-			op,
-			a: parseInt(a),
-			b: parseInt(b),
-			c: parseInt(c)
-		};
-	});
-	return { bound, program };
-};
+import { build, run } from '../common/elfcode.js';
 
 export default {
 	part1() {
-		const { bound, program } = parseInput();
-		const register = [0, 0, 0, 0, 0, 0];
-
-		while (register[bound] >= 0 && register[bound] < program.length) {
-			const { op, a, b, c } = program[register[bound]];
+		const { program, bound } = build(input);
+		for (const { cmd, register } of run(program, bound, [0, 0, 0, 0, 0, 0])) {
+			const { op, a, b } = cmd;
 			if (op === 'eqrr' && b === 0) {
 				return register[a];
 			}
-			register[c] = ops[op](register, a, b);
-			register[bound]++;
 		}
 	},
 	part2() {
