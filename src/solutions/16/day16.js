@@ -56,7 +56,7 @@ export default {
 		const { samples, program } = parseInput();
 		const codes = computeSamples(samples);
 		const register = [0, 0, 0, 0];
-		program.forEach(({ code, a, b, c }) => register[c] = ops[codes[code]](register, a, b));
-		return JSON.stringify(register);
+		program.forEach(({ op, a, b, c }) => register[c] = ops[codes[op]](register, a, b));
+		return register[0];
 	}
 };
