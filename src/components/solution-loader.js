@@ -101,7 +101,7 @@ export default () => {
 					]),
 					m('div', { hidden: !intervalRunning }, m('button.pure-button', { onclick: stopInterval }, 'Stop!'))
 				]),
-				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output) : output)
+				m('pre', isLoading ? 'Loading...' : solutions[solution].html ? m.trust(output.toString()) : output)
 			])
 	};
 };
