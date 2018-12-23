@@ -33,24 +33,22 @@ const getCave = (depth, target, size) => {
 	return arr;
 };
 
-const iterarateCells = function*(arr, start, end) {
-	if (!end) [start, end] = [{ x: 0, y: 0 }, start];
-	for (let y = start.y; y <= end.y; y++) {
-		for (let x = start.x; x <= end.x; x++) {
+const iterarateCells = function*(arr) {
+	for (let y = 0; y < arr.length; y++) {
+		for (let x = 0; x < arr[y].length; x++) {
 			yield arr[y][x];
 		}
 	}
 };
 
-const TOOLS = {
-	0: ['T', 'C'],
-	1: ['C', 'N'],
-	2: ['T', 'N']
-};
-
 const dijkstra = function*(cave, start, end, yieldEvery=1000) {
 	const key = (x, y, tool) => `${x},${y},${tool}`;
-	const toolsFor = (x, y) => TOOLS[cave[y][x]];
+
+	const toolsFor = (x, y) => ({
+		0: ['T', 'C'],
+		1: ['C', 'N'],
+		2: ['T', 'N']
+	}[cave[y][x]]);
 
 	const neighbors = (x, y, tool) => {
 		const arr = [];
@@ -91,9 +89,10 @@ const dijkstra = function*(cave, start, end, yieldEvery=1000) {
 			.forEach(({ x, y }) => heap.push([min + 1, x, y, tool]));
 
 		const temp = {};
-		heap.sort(sortBy(([min]) => min)).forEach(([min, x, y, tool]) => {
+		heap.sort(sortBy(([min]) => min)).forEach(value => {
+			const [_, x, y, tool] = value;
 			if (!temp[key(x, y, tool)]) {
-				temp[key(x, y, tool)] = [min, x, y, tool];
+				temp[key(x, y, tool)] = value;
 			}
 		});
 		heap = Object.entries(temp).map(([_, value]) => value);
@@ -104,7 +103,7 @@ export default {
 	part1() {
 		const { depth, target } = parseInput();
 		const cave = getCave(depth, target);
-		return Array.from(iterarateCells(cave, target))
+		return Array.from(iterarateCells(cave))
 			.map(c => c.type)
 			.reduce((a, b) => a + b, 0);
 	},
