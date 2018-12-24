@@ -40,7 +40,6 @@ export default {
 			z: Math.max(...bots.map(({ pos }) => pos.z))
 		};
 		const origin = { x: 0, y: 0, z: 0 };
-		console.log(min, max);
 		return function*() {
 			let best;
 			let factor = 10000000;
