@@ -7,7 +7,6 @@ const parseInput = () =>
 		.map(chunk => chunk.trim().split('\n').slice(1))
 		.map(army =>
 			army.map(line => {
-				console.log(line);
 				let [units, hp, resistances, atk, type, initiative] = line
 					.match(/^(\d+) units each with (\d+) hit points (\(.+\) )?with an attack that does (\d+) (\w+) damage at initiative (\d+)$/)
 					.slice(1);
