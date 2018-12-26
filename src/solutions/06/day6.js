@@ -2,8 +2,8 @@ import input from './input.js';
 import { makeArray } from '../../util.js';
 
 const parseInput = () => input.split('\n')
-	.map(line => line.split(', '))
-	.map(([x, y]) => ({ x: parseInt(x), y: parseInt(y) }));
+	.map(line => line.split(', ').map(n => parseInt(n)))
+	.map(([x, y]) => ({ x, y }));
 
 const getBounds = coords => ({
 	minX: Math.min(...coords.map(coord => coord.x)),

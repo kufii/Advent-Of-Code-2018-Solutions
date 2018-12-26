@@ -2,15 +2,12 @@ import input from './input.js';
 import { makeArray } from '../../util.js';
 
 const parseInput = () => input.split('\n').map(line => {
-	const [_, x, y, velX, velY] = line.match(/^position=<([ \d-]+),([ \d-]+)> velocity=<([ \d-]+),([ \d-]+)>$/i);
+	const [x, y, velX, velY] = line.match(/^position=<([ \d-]+),([ \d-]+)> velocity=<([ \d-]+),([ \d-]+)>$/i).slice(1).map(n => parseInt(n));
 	return {
-		pos: {
-			x: parseInt(x),
-			y: parseInt(y)
-		},
+		pos: { x, y },
 		velocity: {
-			x: parseInt(velX),
-			y: parseInt(velY)
+			x: velX,
+			y: velY
 		}
 	};
 });

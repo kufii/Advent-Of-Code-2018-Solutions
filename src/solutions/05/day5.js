@@ -9,11 +9,11 @@ const runRegex = input => {
 	});
 	const regex = new RegExp(pairs.join('|'));
 
-	let lastInput;
+	let lastLength;
 	do {
-		lastInput = input;
+		lastLength = input.length;
 		input = input.replace(regex, '');
-	} while (lastInput !== input);
+	} while (lastLength !== input.length);
 	return input;
 };
 

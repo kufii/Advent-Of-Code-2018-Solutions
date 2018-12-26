@@ -2,8 +2,8 @@ import input from './input.js';
 import { makeArray, nTimes } from '../../util.js';
 
 const parseInput = () => {
-	const [_, numPlayers, lastMarble] = input.match(/(\d+)[^\d]*(\d+)/i);
-	return { numPlayers: parseInt(numPlayers), lastMarble: parseInt(lastMarble) };
+	const [numPlayers, lastMarble] = input.match(/(\d+)[^\d]*(\d+)/i).slice(1).map(n => parseInt(n));
+	return { numPlayers, lastMarble };
 };
 
 const run = (numPlayers, lastMarble) => {

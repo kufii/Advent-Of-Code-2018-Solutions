@@ -9,7 +9,7 @@ const parseInput = () => {
 
 	input.split('\n')
 		.map(str => {
-			const [_, time, cmd] = str.match(/^\[(.*)\] (.*)/);
+			const [time, cmd] = str.match(/^\[(.*)\] (.*)/).slice(1);
 			return {
 				time: new Date(time),
 				cmd
@@ -17,8 +17,7 @@ const parseInput = () => {
 		})
 		.sort(sortBy(cmd => cmd.time))
 		.forEach(({ time, cmd }) => {
-			const match = cmd.match(/#(\d+)/);
-			const id = match ? parseInt(match[1]) : null;
+			const [_, id] = cmd.match(/#(\d+)/) || [];
 
 			if (id) {
 				lastId = id;

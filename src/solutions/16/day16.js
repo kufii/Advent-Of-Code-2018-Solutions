@@ -6,17 +6,10 @@ const parseInput = () => {
 	samples = samples.trim().split('\n\n').map(s => {
 		const [before, op, after] = s.split('\n');
 		const regex = /(\[.+\])/;
-		const [_, input] = before.match(regex);
-		const [__, out] = after.match(regex);
-		const [code, a, b, c] = op.split(' ');
-		return {
-			code: parseInt(code),
-			a: parseInt(a),
-			b: parseInt(b),
-			c: parseInt(c),
-			input: JSON.parse(input),
-			out: JSON.parse(out)
-		};
+		const input = JSON.parse(before.match(regex)[1]);
+		const out = JSON.parse(after.match(regex)[1]);
+		const [code, a, b, c] = op.split(' ').map(n => parseInt(n));
+		return { code, a, b, c, input, out };
 	});
 	const { program } = build(programtext);
 	return { samples, program };

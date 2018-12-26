@@ -2,7 +2,7 @@ import input from './input.js';
 import { nTimes, toDict } from '../../util.js';
 
 const parseInput = () => {
-	const [_, initialState] = input.match(/^initial state: ([#.]+)/);
+	const initialState = input.match(/^initial state: ([#.]+)/)[1];
 
 	const pots = initialState.split('')
 		.map((pot, key) => ({ key, value: pot === '#' }))

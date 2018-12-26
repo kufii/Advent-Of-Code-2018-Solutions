@@ -14,7 +14,7 @@ const getTree = nums => {
 			nTimes(() => obj.children.push(getTreeRecursive()), numChild);
 		}
 		obj.metadata = nums.slice(i, i + numMeta);
-		i+= numMeta;
+		i += numMeta;
 		return obj;
 	};
 	return getTreeRecursive(nums);

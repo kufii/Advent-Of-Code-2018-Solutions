@@ -3,16 +3,16 @@ import input from './input.js';
 const parseInput = () =>
 	input.split('\n')
 		.map(str => {
-			const [_, id, posX, posY, sizeX, sizeY] = str.match(/^#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/);
+			const [id, posX, posY, sizeX, sizeY] = str.match(/^#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/).slice(1).map(n => parseInt(n));
 			return {
-				id: parseInt(id),
+				id,
 				pos: {
-					x: parseInt(posX),
-					y: parseInt(posY)
+					x: posX,
+					y: posY
 				},
 				size: {
-					x: parseInt(sizeX),
-					y: parseInt(sizeY)
+					x: sizeX,
+					y: sizeY
 				}
 			};
 		});

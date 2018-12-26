@@ -4,7 +4,7 @@ import { groupBy, sortBy, makeArray } from '../../util.js';
 const parseInput = () => {
 	const steps = input.split('\n')
 		.map(line => {
-			const [_, dependsOn, step] = line.match(/^Step ([A-Z]) must be finished before step ([A-Z])/i);
+			const [dependsOn, step] = line.match(/^Step ([A-Z]) must be finished before step ([A-Z])/i).slice(1);
 			return { step, dependsOn };
 		})
 		.reduce(groupBy(a => a.step, a => a.dependsOn), {});

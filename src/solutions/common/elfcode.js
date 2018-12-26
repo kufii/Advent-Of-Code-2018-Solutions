@@ -2,13 +2,9 @@ const build = input => {
 	const lines = input.trim().split('\n');
 	const bound = lines[0].startsWith('#') ? parseInt(lines[0].split(' ')[1]) : null;
 	const program = (bound == null ? lines : lines.slice(1)).map(line => {
-		const [op, a, b, c] = line.split(' ');
-		return {
-			op,
-			a: parseInt(a),
-			b: parseInt(b),
-			c: parseInt(c)
-		};
+		let [op, a, b, c] = line.split(' ');
+		[a, b, c] = [a, b, c].map(n => parseInt(n));
+		return { op, a, b, c };
 	});
 	return { bound, program };
 };

@@ -3,16 +3,17 @@ import { makeArray } from '../../util.js';
 
 const parseInput = () => {
 	const coords = input.split('\n').map(line => {
-		const [_, x] = line.match(/x=(\d+\.?\.?(?:\d+)?)/);
-		const [__, y] = line.match(/y=(\d+\.?\.?(?:\d+)?)/);
 		const parse = str => {
 			if (str.includes('..')) {
-				const [from, to] = str.split('..');
-				return { from: parseInt(from), to: parseInt(to) };
+				const [from, to] = str.split('..').map(n => parseInt(n));
+				return { from, to };
 			}
-			return { from: parseInt(str), to: parseInt(str) };
+			const n = parseInt(str);
+			return { from: n, to: n };
 		};
-		return { x: parse(x), y: parse(y) };
+		const x = parse(line.match(/x=(\d+\.?\.?(?:\d+)?)/)[1]);
+		const y = parse(line.match(/y=(\d+\.?\.?(?:\d+)?)/)[1]);
+		return { x, y };
 	});
 	const minX = Math.min(...coords.map(c => c.x.from));
 	const maxX = Math.max(...coords.map(c => c.x.to));
@@ -32,11 +33,12 @@ const parseInput = () => {
 
 const run = visualize => {
 	const arr = parseInput();
-	const toString = () => `<pre style="font-size: 10px;">${
-		arr.map(
-			line => line.map(c => '~|'.includes(c) ? `<span style="color: blue">${c}</span>` : c).join('')
-		).join('\n')
-	}</pre>`;
+	const toString = () =>
+		`<pre style="font-size: 10px;">${
+			arr.map(
+				line => line.map(c => '~|'.includes(c) ? `<span style="color: blue">${c}</span>` : c).join('')
+			).join('\n')
+		}</pre>`;
 	const getCount = tile => arr.map(line => line.reduce((count, a) => count + (a === tile ? 1 : 0), 0))
 		.reduce((count, num) => count + num, 0);
 
