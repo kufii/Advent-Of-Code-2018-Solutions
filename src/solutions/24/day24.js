@@ -7,12 +7,12 @@ const parseInput = () =>
 		.map(chunk => chunk.trim().split('\n').slice(1))
 		.map(army =>
 			army.map(line => {
-				let [units, hp, resistances, atk, type, initiative] = line
+				let [units, hp, resistances='', atk, type, initiative] = line
 					.match(/^(\d+) units each with (\d+) hit points (\(.+\) )?with an attack that does (\d+) (\w+) damage at initiative (\d+)$/)
 					.slice(1);
 				[units, hp, atk, initiative] = [units, hp, atk, initiative].map(n => parseInt(n));
-				const [weaknesses=[]] = ((resistances || '').match(/weak to ([\w, ]+)/) || []).slice(1).map(str => str.split(', '));
-				const [immunities=[]] = ((resistances || '').match(/immune to ([\w, ]+)/) || []).slice(1).map(str => str.split(', '));
+				const [weaknesses=[]] = (resistances.match(/weak to ([\w, ]+)/) || []).slice(1).map(str => str.split(', '));
+				const [immunities=[]] = (resistances.match(/immune to ([\w, ]+)/) || []).slice(1).map(str => str.split(', '));
 				return { units, hp, atk, type, initiative, weaknesses, immunities };
 			}));
 
