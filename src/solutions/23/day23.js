@@ -48,9 +48,7 @@ export default {
 				const start = best ? { x: best.x - (factor * 10), y: best.y - (factor * 10), z: best.z - (factor * 10) } : min;
 				const end = best ? { x: best.x + (factor * 10), y: best.y + (factor * 10), z: best.z + (factor * 10) } : max;
 				best = Array.from(iterate(start, end, factor)).sort(sortBy(
-					desc(
-						pos1 => bots.filter(({ pos, range }) => distance(pos1, pos) <= range).length
-					),
+					desc(pos1 => bots.filter(({ pos, range }) => distance(pos1, pos) <= range).length),
 					pos => distance(pos, origin)
 				))[0];
 				factor /= 10;
