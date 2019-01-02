@@ -1,6 +1,6 @@
 {
-    "extends": "adpyke-es6",
-    "parserOptions": {
-    	"sourceType": "module"
-    }
+	"extends": "adpyke-es6",
+	"parserOptions": {
+		"sourceType": "module"
+	}
 }
